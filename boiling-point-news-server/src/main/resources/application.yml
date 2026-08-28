@@ -35,6 +35,8 @@ app:
     heartbeat-interval: ${SSE_HEARTBEAT_INTERVAL:30000}
 
 logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [%X{requestId:-system}] %logger{36} - %msg%n"
   level:
     root: info
     com.boilingpoint.news: info
