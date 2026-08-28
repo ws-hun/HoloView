@@ -33,6 +33,11 @@ app:
   collector:
     initial-delay: ${COLLECTOR_INITIAL_DELAY:60000}
     fixed-delay: ${COLLECTOR_FIXED_DELAY:60000}
+    baidu:
+      enabled: ${BAIDU_COLLECTOR_ENABLED:true}
+      url: ${BAIDU_COLLECTOR_URL:https://top.baidu.com/board?tab=realtime}
+      limit: ${BAIDU_COLLECTOR_LIMIT:30}
+      timeout: ${BAIDU_COLLECTOR_TIMEOUT:10s}
   sse:
     timeout: ${SSE_TIMEOUT:1800000}
     heartbeat-interval: ${SSE_HEARTBEAT_INTERVAL:30000}

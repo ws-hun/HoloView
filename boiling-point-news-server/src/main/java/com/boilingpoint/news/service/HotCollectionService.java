@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -36,6 +37,7 @@ public class HotCollectionService {
         }
         LocalDateTime now = LocalDateTime.now();
         int persisted = 0;
+        List<String> activeKeys = new ArrayList<>();
         for (CollectedHotItem collected : items) {
             if (collected == null || collected.sourceItemKey() == null || collected.sourceItemKey().isBlank()
                     || collected.title() == null || collected.title().isBlank()) {
@@ -56,13 +58,16 @@ public class HotCollectionService {
                     .recordedAt(now)
                     .build());
             persisted++;
+            activeKeys.add(collected.sourceItemKey());
         }
+        int offlineCount = activeKeys.isEmpty()
+                ? 0 : hotItemMapper.markMissingItemsInactive(collector.source(), activeKeys);
         hotCacheService.evictByPrefix("hot:list:");
         hotCacheService.evictByPrefix("hot:latest:");
         hotCacheService.evictByPrefix("hot:detail:");
         hotCacheService.evictByPrefix("hot:trend:");
-        log.info("Hot collection persisted: source={}, collectedCount={}, persistedCount={}",
-                collector.source(), items.size(), persisted);
+        log.info("Hot collection persisted: source={}, collectedCount={}, persistedCount={}, offlineCount={}",
+                collector.source(), items.size(), persisted, offlineCount);
         if (persisted > 0) {
             eventPublisher.publishEvent(new HotCollectionCompletedEvent(collector.source(), persisted, now));
         }

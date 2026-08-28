@@ -58,4 +58,17 @@
           AND deleted = 0
         LIMIT 1
     </select>
+
+    <update id="markMissingItemsInactive">
+        UPDATE hot_item
+        SET status = 0,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE source = #{source}
+          AND deleted = 0
+          AND status = 1
+          AND source_item_key NOT IN
+          <foreach collection="activeKeys" item="key" open="(" separator="," close=")">
+              #{key}
+          </foreach>
+    </update>
 </mapper>

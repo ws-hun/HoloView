@@ -8,6 +8,9 @@ const route = useRoute()
 const router = useRouter()
 const searchValue = ref('')
 const menuOpen = ref(false)
+const dataSourceLabel = import.meta.env.VITE_DATA_MODE === 'live'
+  ? '当前接入百度公开热榜'
+  : '当前使用本地 Mock 热点流'
 const navItems = [
   { name: '首页', to: '/', icon: '◉' },
   { name: '热榜', to: '/boards', icon: '↗' },
@@ -63,7 +66,7 @@ function submitSearch() {
     <footer v-if="!isDetail" class="site-footer">
       <div class="footer-inner">
         <p><strong>沸点速报</strong> · 把全网正在发生的事，放在一起看。</p>
-        <p>数据每分钟刷新 · 演示环境使用 Mock 热点流</p>
+        <p>数据每分钟刷新 · {{ dataSourceLabel }}</p>
       </div>
     </footer>
   </div>

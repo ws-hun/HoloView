@@ -100,4 +100,12 @@ class MapperIntegrationTest {
                 .extracting(category -> category.getCode().getCode())
                 .containsExactly("GENERAL", "TECHNOLOGY");
     }
+
+    @Test
+    void shouldMarkItemsMissingFromLatestCollectionInactive() {
+        int updated = hotItemMapper.markMissingItemsInactive(HotSource.WEIBO, List.of("not-present"));
+
+        assertThat(updated).isEqualTo(1);
+        assertThat(hotItemMapper.selectById(101L).getStatus()).isZero();
+    }
 }

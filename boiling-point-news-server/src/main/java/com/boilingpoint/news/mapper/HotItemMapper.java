@@ -22,4 +22,9 @@ public interface HotItemMapper extends BaseMapper<HotItemEntity> {
 
     HotItemEntity selectBySourceAndKey(@Param("source") com.boilingpoint.news.common.enums.HotSource source,
                                        @Param("sourceItemKey") String sourceItemKey);
+
+    int markMissingItemsInactive(
+            @Param("source") com.boilingpoint.news.common.enums.HotSource source,
+            @Param("activeKeys") List<String> activeKeys
+    );
 }

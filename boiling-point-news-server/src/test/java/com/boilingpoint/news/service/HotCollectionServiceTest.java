@@ -68,6 +68,7 @@ class HotCollectionServiceTest {
         assertThat(historyCaptor.getValue().getHotId()).isEqualTo(901L);
         assertThat(historyCaptor.getValue().getRank()).isEqualTo(3);
         verify(hotCacheService).evictByPrefix("hot:list:");
+        verify(hotItemMapper).markMissingItemsInactive(HotSource.WEIBO, List.of("item-1"));
         verify(eventPublisher).publishEvent(any(com.boilingpoint.news.event.HotCollectionCompletedEvent.class));
     }
 
