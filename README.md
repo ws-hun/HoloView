@@ -134,6 +134,27 @@ VITE_API_BASE_URL=/api
 VITE_SSE_URL=/api/sse/hot
 ```
 
+### 4. 无 Docker 本地联调
+
+不希望连接本机 MySQL 时，可以使用隔离的 `local` 配置。该配置使用内存 H2 演示库和 Redis 1 号库，不会修改 MySQL 数据：
+
+```bash
+cd boiling-point-news-server
+SPRING_PROFILES_ACTIVE=local SERVER_PORT=18080 mvn spring-boot:run
+```
+
+另开终端启动 Live 前端：
+
+```bash
+cd boiling-point-news-web
+VITE_DATA_MODE=live \
+VITE_DEV_PORT=15173 \
+VITE_DEV_PROXY_TARGET=http://127.0.0.1:18080 \
+npm run dev
+```
+
+访问 <http://127.0.0.1:15173/>。后端日志包含请求 ID、采集批次、SQL、缓存降级和 SSE 连接信息，前端日志统一使用 `[沸点速报]` 前缀。
+
 ## 页面路由
 
 | 路由 | 页面 |

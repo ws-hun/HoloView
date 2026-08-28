@@ -12,6 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.context.request.async.AsyncRequestNotUsableException;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 
 import java.util.stream.Collectors;
 
@@ -61,6 +63,12 @@ public class GlobalExceptionHandler {
         String message = exception.getParameterName() + ": 参数不能为空";
         log.warn("Required request parameter missing: parameter={}", exception.getParameterName());
         return Result.failure(ResultCode.BAD_REQUEST, message);
+    }
+
+    @ExceptionHandler({AsyncRequestNotUsableException.class, AsyncRequestTimeoutException.class})
+    public void handleAsyncRequestException(Exception exception, HttpServletRequest request) {
+        log.debug("Async request ended: method={}, path={}, reason={}",
+                request.getMethod(), request.getRequestURI(), exception.getClass().getSimpleName());
     }
 
     private Result<Void> validationFailure(BindException exception) {

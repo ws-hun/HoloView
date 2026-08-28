@@ -28,7 +28,7 @@ export interface HotItem {
   rankChange: number
   trend: HotTrend
   cover: string
-  publishedAt: string
+  publishedAt: string | null
   updatedAt: string
 }
 

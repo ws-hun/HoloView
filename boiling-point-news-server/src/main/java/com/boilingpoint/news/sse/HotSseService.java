@@ -67,7 +67,6 @@ public class HotSseService {
                 emitter.send(SseEmitter.event().name(eventName).data(data));
             } catch (IOException | IllegalStateException exception) {
                 emitters.remove(connectionId);
-                emitter.complete();
                 log.warn("SSE send failed: connectionId={}, event={}, error={}",
                         connectionId, eventName, exception.toString());
             }

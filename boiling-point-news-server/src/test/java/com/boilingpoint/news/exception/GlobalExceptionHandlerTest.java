@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.AsyncRequestNotUsableException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -57,6 +58,13 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.message").value("系统繁忙，请稍后重试"));
     }
 
+    @Test
+    void shouldHandleClosedAsyncRequestWithoutWritingJsonBody() throws Exception {
+        mockMvc.perform(get("/test/async-closed"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").doesNotExist());
+    }
+
     @RestController
     @RequestMapping("/test")
     static class TestController {
@@ -74,6 +82,11 @@ class GlobalExceptionHandlerTest {
         @GetMapping("/unexpected")
         Result<Void> unexpected() {
             throw new IllegalStateException("database password must not be exposed");
+        }
+
+        @GetMapping("/async-closed")
+        void asyncClosed() throws AsyncRequestNotUsableException {
+            throw new AsyncRequestNotUsableException("client disconnected");
         }
     }
 

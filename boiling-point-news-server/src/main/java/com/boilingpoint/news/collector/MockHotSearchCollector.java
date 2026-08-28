@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Profile({"dev", "test"})
+@Profile({"dev", "test", "local"})
 public class MockHotSearchCollector implements HotSearchCollector {
 
     @Override
