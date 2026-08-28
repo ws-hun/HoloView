@@ -167,6 +167,7 @@ GET /api/hot/ranking
 GET /api/hot/trending
 GET /api/hot/latest
 GET /api/hot/search?keyword=人工智能
+GET /api/hot/{id}/trend?hours=24&limit=100
 GET /api/platform/list
 GET /api/platform/{code}/hot
 GET /api/category/list
@@ -179,6 +180,8 @@ GET /api/sse/hot
 项目从第一阶段就保留可观察性：
 
 - 后端使用 SLF4J，记录查询条件、结果数量、耗时、采集平台、SSE 连接和异常堆栈。
+- 热点列表、详情、最新榜和趋势查询使用 Redis Cache-Aside；缓存不可用时自动回源数据库，并记录缓存读写告警。
+- 每次 HTTP 请求都会生成或透传 `X-Request-Id`，响应头和日志均带该 ID，便于前后端串联排查。
 - 开发环境启用 MyBatis SQL 日志，便于检查 SQL、参数和结果。
 - 前端统一输出 `[沸点速报]` 前缀日志，记录 API 失败、SSE 连接/重连和 Mock 更新。
 - 日志不包含密码、Token、完整连接串或其他敏感信息。
@@ -197,17 +200,15 @@ GET /api/sse/hot
 进行中：
 
 - REST Controller 与接口联调。
-- Redis 缓存服务。
+- Redis Cache-Aside 缓存服务。
 - Mock Collector、热点历史写入和 SSE 服务端推送。
 - MySQL、Redis、前后端一键启动配置。
 
 ## 路线图
 
-1. 完成 REST Controller 和 OpenAPI 风格接口测试。
-2. 接入 Redis Cache Aside 与热点榜单缓存。
-3. 完成 Mock Collector 调度、热度历史和 SSE 服务端事件。
-4. 接入第一个真实平台数据源，并增加失败降级和限流。
-5. 增加关键词订阅、收藏、AI 摘要和舆情聚类。
+1. 完成 Mock Collector 调度、热度历史和 SSE 服务端事件。
+2. 接入第一个真实平台数据源，并增加失败降级和限流。
+3. 增加关键词订阅、收藏、AI 摘要和舆情聚类。
 
 ## 贡献
 

@@ -28,6 +28,8 @@ mybatis-plus:
       logic-not-delete-value: 0
 
 app:
+  cache:
+    enabled: ${CACHE_ENABLED:true}
   collector:
     fixed-delay: ${COLLECTOR_FIXED_DELAY:60000}
   sse:

@@ -13,6 +13,7 @@ import com.boilingpoint.news.mapper.HotHistoryMapper;
 import com.boilingpoint.news.mapper.HotItemMapper;
 import com.boilingpoint.news.service.impl.HotQueryServiceImpl;
 import com.boilingpoint.news.vo.HotDetailVO;
+import com.boilingpoint.news.vo.HotItemVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +39,9 @@ class HotQueryServiceImplTest {
 
     @Mock
     private HotHistoryMapper hotHistoryMapper;
+
+    @Mock
+    private HotCacheService hotCacheService;
 
     private HotQueryServiceImpl service;
 
@@ -114,6 +118,20 @@ class HotQueryServiceImplTest {
         assertThat(service.latest(5)).hasSize(1);
 
         verify(hotItemMapper).selectLatestItems(5);
+    }
+
+    @Test
+    void shouldReturnListFromCacheWithoutQueryingMapper() {
+        HotItemVO cached = new HotItemVO(101L, "缓存热点", "描述", HotSource.WEIBO, "微博", null,
+                HotCategory.TECHNOLOGY, "科技", 1L, "1", 1, null, 0, HotTrend.STABLE,
+                null, null, null);
+        service = new HotQueryServiceImpl(hotItemMapper, hotHistoryMapper, new HotItemConverter(), hotCacheService);
+        when(hotCacheService.get("hot:list:-:-:-::20")).thenReturn(List.of(cached));
+
+        List<HotItemVO> result = service.list(new HotItemQueryDTO());
+
+        assertThat(result).containsExactly(cached);
+        org.mockito.Mockito.verifyNoInteractions(hotItemMapper);
     }
 
     private HotItemEntity createItem(Long id, int rank) {
