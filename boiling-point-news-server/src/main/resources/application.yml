@@ -38,6 +38,11 @@ app:
       url: ${BAIDU_COLLECTOR_URL:https://top.baidu.com/board?tab=realtime}
       limit: ${BAIDU_COLLECTOR_LIMIT:30}
       timeout: ${BAIDU_COLLECTOR_TIMEOUT:10s}
+    toutiao:
+      enabled: ${TOUTIAO_COLLECTOR_ENABLED:true}
+      url: ${TOUTIAO_COLLECTOR_URL:https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc}
+      limit: ${TOUTIAO_COLLECTOR_LIMIT:30}
+      timeout: ${TOUTIAO_COLLECTOR_TIMEOUT:10s}
   source-link:
     timeout: ${SOURCE_LINK_TIMEOUT:8s}
     cache-ttl: ${SOURCE_LINK_CACHE_TTL:30m}

@@ -154,17 +154,21 @@ VITE_DEV_PROXY_TARGET=http://127.0.0.1:18080 \
 npm run dev
 ```
 
-访问 <http://127.0.0.1:15173/>。`local` Profile 使用 H2 内存库并启用真实百度采集器，不写入本机 MySQL。后端日志包含请求 ID、采集批次、SQL、缓存降级和 SSE 连接信息，前端日志统一使用 `[沸点速报]` 前缀。
+访问 <http://127.0.0.1:15173/>。`local` Profile 使用 H2 内存库并启用真实百度、今日头条采集器，不写入本机 MySQL。后端日志包含请求 ID、采集批次、SQL、缓存降级和 SSE 连接信息，前端日志统一使用 `[沸点速报]` 前缀。
 
 ## 真实数据源
 
-首个数据源来自百度热榜公开页面：<https://top.baidu.com/board?tab=realtime>。采集器使用明确的项目 User-Agent，以分钟级频率请求公开页面，并从页面内的结构化数据映射热点字段；不需要账号或 API Token，也不会绕过登录、验证码或访问限制。
+当前已接入两个无需授权的公开数据源：百度热榜公开页面：<https://top.baidu.com/board?tab=realtime>，以及今日头条热榜 JSON 接口：<https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc>。采集器使用明确的项目 User-Agent，以分钟级频率请求公开页面，并映射标题、摘要、排名、热度、封面和详情地址；不需要账号或 API Token，也不会绕过登录、验证码或访问限制。知乎公开接口当前要求身份验证，抖音热榜需要签名参数，因此暂不接入。
 
 ```bash
 export BAIDU_COLLECTOR_ENABLED=true
 export BAIDU_COLLECTOR_URL='https://top.baidu.com/board?tab=realtime'
 export BAIDU_COLLECTOR_LIMIT=30
 export BAIDU_COLLECTOR_TIMEOUT=10s
+export TOUTIAO_COLLECTOR_ENABLED=true
+export TOUTIAO_COLLECTOR_URL='https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc'
+export TOUTIAO_COLLECTOR_LIMIT=30
+export TOUTIAO_COLLECTOR_TIMEOUT=10s
 export COLLECTOR_INITIAL_DELAY=10000
 export COLLECTOR_FIXED_DELAY=60000
 ```
@@ -175,6 +179,10 @@ export COLLECTOR_FIXED_DELAY=60000
 | `BAIDU_COLLECTOR_URL` | 百度实时榜公开页面 | 便于测试时替换为本地样例 |
 | `BAIDU_COLLECTOR_LIMIT` | `30` | 单次最多保留的榜单条数，范围 1-50 |
 | `BAIDU_COLLECTOR_TIMEOUT` | `10s` | 单次 HTTP 请求超时 |
+| `TOUTIAO_COLLECTOR_ENABLED` | `true` | 是否启用今日头条真实数据源 |
+| `TOUTIAO_COLLECTOR_URL` | 今日头条热榜公开接口 | 便于测试时替换为本地样例 |
+| `TOUTIAO_COLLECTOR_LIMIT` | `30` | 单次最多保留的榜单条数，范围 1-50 |
+| `TOUTIAO_COLLECTOR_TIMEOUT` | `10s` | 单次 HTTP 请求超时 |
 | `COLLECTOR_FIXED_DELAY` | `60000` | 两次采集完成时间之间的间隔，建议不要低于一分钟 |
 
 采集成功后，同平台已离榜的旧数据会标记为下线；请求失败、页面结构变化或返回空榜时，本批次不会覆盖已有数据，异常原因和耗时会写入后端日志。公开页面结构可能调整，因此生产使用前应评估目标站点规则并持续监控采集失败率。
