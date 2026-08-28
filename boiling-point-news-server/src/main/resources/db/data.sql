@@ -1,0 +1,35 @@
+-- Boiling Point News - initial dictionary data
+-- The upserts make this script safe to run repeatedly.
+
+SET NAMES utf8mb4;
+
+INSERT INTO `source_platform` (`name`, `code`, `logo`, `status`, `sort`)
+VALUES
+    ('微博', 'WEIBO', NULL, 1, 10),
+    ('知乎', 'ZHIHU', NULL, 1, 20),
+    ('百度', 'BAIDU', NULL, 1, 30),
+    ('抖音', 'DOUYIN', NULL, 1, 40),
+    ('今日头条', 'TOUTIAO', NULL, 1, 50),
+    ('其他', 'OTHER', NULL, 1, 99) AS `incoming`
+ON DUPLICATE KEY UPDATE
+    `name` = `incoming`.`name`,
+    `logo` = `incoming`.`logo`,
+    `status` = `incoming`.`status`,
+    `sort` = `incoming`.`sort`;
+
+INSERT INTO `hot_category` (`name`, `code`, `status`, `sort`)
+VALUES
+    ('综合', 'GENERAL', 1, 10),
+    ('社会', 'SOCIETY', 1, 20),
+    ('科技', 'TECHNOLOGY', 1, 30),
+    ('娱乐', 'ENTERTAINMENT', 1, 40),
+    ('体育', 'SPORTS', 1, 50),
+    ('财经', 'FINANCE', 1, 60),
+    ('国际', 'INTERNATIONAL', 1, 70),
+    ('游戏', 'GAMING', 1, 80),
+    ('汽车', 'AUTOMOTIVE', 1, 90),
+    ('生活', 'LIFESTYLE', 1, 100) AS `incoming`
+ON DUPLICATE KEY UPDATE
+    `name` = `incoming`.`name`,
+    `status` = `incoming`.`status`,
+    `sort` = `incoming`.`sort`;

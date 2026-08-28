@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      minimum-idle: ${DB_MINIMUM_IDLE:5}
+      maximum-pool-size: ${DB_MAXIMUM_POOL_SIZE:20}
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:30000}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DATABASE:0}
+      timeout: ${REDIS_TIMEOUT:3s}
+  sql:
+    init:
+      mode: never
+
+logging:
+  level:
+    root: warn
+    com.boilingpoint.news: info

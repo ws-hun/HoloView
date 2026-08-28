@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boilingpoint.news.mapper.HotHistoryMapper">
+
+    <select id="selectTrendPoints" resultType="com.boilingpoint.news.entity.HotHistoryEntity">
+        SELECT id, hot_id, hot_value, `rank`, recorded_at
+        FROM (
+            SELECT id, hot_id, hot_value, `rank`, recorded_at
+            FROM hot_history
+            WHERE hot_id = #{hotId}
+              AND recorded_at &gt;= #{since}
+            ORDER BY recorded_at DESC
+            LIMIT #{limit}
+        ) recent_history
+        ORDER BY recorded_at ASC
+    </select>
+</mapper>

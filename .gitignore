@@ -1,0 +1,21 @@
+.DS_Store
+.idea/
+*.iml
+.vscode/
+
+# Java / Spring Boot
+boiling-point-news-server/target/
+*.class
+*.log
+
+# Node / Vite
+boiling-point-news-web/node_modules/
+boiling-point-news-web/dist/
+boiling-point-news-web/.env
+boiling-point-news-web/.env.*
+!boiling-point-news-web/.env.example
+
+# OS and local tooling
+.env
+.env.local
+coverage/

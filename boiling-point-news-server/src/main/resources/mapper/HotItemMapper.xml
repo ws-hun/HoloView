@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boilingpoint.news.mapper.HotItemMapper">
+
+    <sql id="hotItemColumns">
+        id, title, description, source, source_item_key, source_url, category,
+        hot_value, hot_value_text, `rank`, previous_rank, rank_change, trend,
+        cover, published_at, status, created_at, updated_at, deleted
+    </sql>
+
+    <select id="selectHotItems" resultType="com.boilingpoint.news.entity.HotItemEntity">
+        SELECT <include refid="hotItemColumns" />
+        FROM hot_item
+        WHERE deleted = 0
+          AND status = 1
+        <if test="query.source != null">
+          AND source = #{query.source}
+        </if>
+        <if test="query.category != null and query.category.name() != 'GENERAL'">
+          AND category = #{query.category}
+        </if>
+        <if test="query.trend != null">
+          AND trend = #{query.trend}
+        </if>
+        <if test="query.keyword != null and query.keyword.trim() != ''">
+          AND (title LIKE CONCAT('%', #{query.keyword}, '%')
+               OR description LIKE CONCAT('%', #{query.keyword}, '%'))
+        </if>
+        ORDER BY hot_value DESC, updated_at DESC
+        LIMIT #{query.limit}
+    </select>
+
+    <select id="selectLatestItems" resultType="com.boilingpoint.news.entity.HotItemEntity">
+        SELECT <include refid="hotItemColumns" />
+        FROM hot_item
+        WHERE deleted = 0
+          AND status = 1
+        ORDER BY updated_at DESC, hot_value DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="selectRelatedItems" resultType="com.boilingpoint.news.entity.HotItemEntity">
+        SELECT <include refid="hotItemColumns" />
+        FROM hot_item
+        WHERE category = #{category}
+          AND id != #{excludeId}
+          AND deleted = 0
+          AND status = 1
+        ORDER BY hot_value DESC, updated_at DESC
+        LIMIT #{limit}
+    </select>
+</mapper>
