@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -35,12 +36,14 @@ class HotCollectionServiceTest {
     private HotCacheService hotCacheService;
     @Mock
     private HotSearchCollector collector;
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     private HotCollectionService service;
 
     @BeforeEach
     void setUp() {
-        service = new HotCollectionService(hotItemMapper, hotHistoryMapper, hotCacheService);
+        service = new HotCollectionService(hotItemMapper, hotHistoryMapper, hotCacheService, eventPublisher);
         when(collector.source()).thenReturn(HotSource.WEIBO);
     }
 
@@ -65,6 +68,7 @@ class HotCollectionServiceTest {
         assertThat(historyCaptor.getValue().getHotId()).isEqualTo(901L);
         assertThat(historyCaptor.getValue().getRank()).isEqualTo(3);
         verify(hotCacheService).evictByPrefix("hot:list:");
+        verify(eventPublisher).publishEvent(any(com.boilingpoint.news.event.HotCollectionCompletedEvent.class));
     }
 
     @Test
@@ -87,7 +91,7 @@ class HotCollectionServiceTest {
     @Test
     void shouldIgnoreEmptyCollectionWithoutEvictingCache() {
         assertThat(service.persist(collector, List.of())).isZero();
-        org.mockito.Mockito.verifyNoInteractions(hotItemMapper, hotHistoryMapper, hotCacheService);
+        org.mockito.Mockito.verifyNoInteractions(hotItemMapper, hotHistoryMapper, hotCacheService, eventPublisher);
     }
 
     private CollectedHotItem item(String key, int rank, long hotValue) {

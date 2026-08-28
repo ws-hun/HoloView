@@ -8,9 +8,11 @@ import com.boilingpoint.news.entity.HotHistoryEntity;
 import com.boilingpoint.news.entity.HotItemEntity;
 import com.boilingpoint.news.mapper.HotHistoryMapper;
 import com.boilingpoint.news.mapper.HotItemMapper;
+import com.boilingpoint.news.event.HotCollectionCompletedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,7 @@ public class HotCollectionService {
     private final HotItemMapper hotItemMapper;
     private final HotHistoryMapper hotHistoryMapper;
     private final HotCacheService hotCacheService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public int persist(HotSearchCollector collector, List<CollectedHotItem> items) {
@@ -60,6 +63,9 @@ public class HotCollectionService {
         hotCacheService.evictByPrefix("hot:trend:");
         log.info("Hot collection persisted: source={}, collectedCount={}, persistedCount={}",
                 collector.source(), items.size(), persisted);
+        if (persisted > 0) {
+            eventPublisher.publishEvent(new HotCollectionCompletedEvent(collector.source(), persisted, now));
+        }
         return persisted;
     }
 

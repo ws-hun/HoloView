@@ -32,6 +32,12 @@ export interface HotItem {
   updatedAt: string
 }
 
+export interface HotDetail {
+  item: HotItem
+  trendPoints: TrendPoint[]
+  relatedItems: HotItem[]
+}
+
 export interface TrendPoint {
   hotValue: number
   rank: number

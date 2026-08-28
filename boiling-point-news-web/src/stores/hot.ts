@@ -60,8 +60,8 @@ export const useHotStore = defineStore('hot', () => {
     }
     eventSource.addEventListener('hot-update', (event) => {
       try {
-        const update = JSON.parse((event as MessageEvent<string>).data) as Partial<HotItem> & { id: number }
-        applyUpdate(update)
+        const update = JSON.parse((event as MessageEvent<string>).data) as { persistedCount?: number; source?: string }
+        void refreshLiveItems(update)
       } catch (error) {
         logger.error('Invalid SSE payload', { message: String(error) })
       }
@@ -69,6 +69,26 @@ export const useHotStore = defineStore('hot', () => {
     eventSource.onerror = () => {
       sseConnected.value = false
       logger.warn('SSE disconnected; browser will retry', { url })
+    }
+  }
+
+  async function refreshLiveItems(context: { persistedCount?: number; source?: string }) {
+    try {
+      const items = await hotApi.list()
+      latestHotItems.value = items
+      lastUpdateTime.value = new Date().toISOString()
+      if (context.persistedCount) {
+        notifications.value.unshift({
+          id: `${context.source || 'all'}-${Date.now()}`,
+          title: '热点榜单已更新',
+          message: `${context.persistedCount} 条内容完成采集`,
+          createdAt: lastUpdateTime.value,
+        })
+        notifications.value = notifications.value.slice(0, 6)
+      }
+      logger.info('Live hot data refreshed', context)
+    } catch (error) {
+      logger.error('Failed to refresh live hot data', { message: String(error), ...context })
     }
   }
 

@@ -19,8 +19,18 @@ const related = computed(() => item.value ? hotStore.latestHotItems.filter((cand
 async function load() {
   await hotStore.initialize()
   const id = Number(route.params.id)
-  item.value = hotStore.latestHotItems.find((candidate) => candidate.id === id) || await hotApi.detail(id)
-  if (item.value) trend.value = await hotApi.trend(item.value.id)
+  const cached = hotStore.latestHotItems.find((candidate) => candidate.id === id)
+  if (cached) {
+    item.value = cached
+    trend.value = await hotApi.trend(id)
+  } else if (import.meta.env.VITE_DATA_MODE === 'live') {
+    const detail = await hotApi.detail(id)
+    item.value = detail
+    trend.value = await hotApi.trend(id)
+  } else {
+    item.value = await hotApi.detail(id)
+    if (item.value) trend.value = await hotApi.trend(item.value.id)
+  }
 }
 watch(() => route.params.id, load)
 onMounted(load)

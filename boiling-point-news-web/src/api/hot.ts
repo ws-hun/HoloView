@@ -1,6 +1,6 @@
 import { http } from '@/api/http'
 import { buildTrend, categories, mockHotItems, platforms } from '@/api/mockData'
-import type { ApiResult, CategoryMeta, HotCategory, HotItem, HotSource, PlatformMeta, TrendPoint } from '@/types/hot'
+import type { ApiResult, CategoryMeta, HotCategory, HotDetail, HotItem, HotSource, PlatformMeta, TrendPoint } from '@/types/hot'
 
 const isMock = import.meta.env.VITE_DATA_MODE !== 'live'
 
@@ -27,7 +27,7 @@ export const hotApi = {
   },
   detail(id: number) {
     return withMock(
-      async () => (await http.get<ApiResult<HotItem>>(`/hot/${id}`)).data.data,
+      async () => (await http.get<ApiResult<HotDetail>>(`/hot/${id}`)).data.data.item,
       () => mockHotItems.find((item) => item.id === id) || mockHotItems[0],
     )
   },
@@ -39,7 +39,11 @@ export const hotApi = {
   },
   platforms() {
     return withMock(
-      async () => (await http.get<ApiResult<PlatformMeta[]>>('/platform/list')).data.data,
+      async () => (await http.get<ApiResult<PlatformMeta[]>>('/platform/list')).data.data.map((platform) => ({
+        ...platform,
+        shortName: platform.shortName || platform.name.replace(/(热搜|热榜|热点)$/, ''),
+        color: platform.color || '#7c858b',
+      })),
       () => platforms,
     )
   },
