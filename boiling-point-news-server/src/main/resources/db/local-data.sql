@@ -4,6 +4,8 @@ INSERT INTO source_platform (name, code, status, sort) VALUES
 ('百度', 'BAIDU', 1, 30),
 ('抖音', 'DOUYIN', 1, 40),
 ('今日头条', 'TOUTIAO', 1, 50),
+('哔哩哔哩', 'BILIBILI', 1, 60),
+('掘金', 'JUEJIN', 1, 70),
 ('其他', 'OTHER', 1, 99);
 
 INSERT INTO hot_category (name, code, status, sort) VALUES

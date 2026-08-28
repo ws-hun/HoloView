@@ -9,6 +9,8 @@ export const platforms: PlatformMeta[] = [
   { code: 'BAIDU', name: '百度热搜', shortName: '百度', color: '#3b5bdb' },
   { code: 'DOUYIN', name: '抖音热点', shortName: '抖音', color: '#17191c' },
   { code: 'TOUTIAO', name: '今日头条', shortName: '头条', color: '#f04438' },
+  { code: 'BILIBILI', name: '哔哩哔哩', shortName: 'B站', color: '#00aeec' },
+  { code: 'JUEJIN', name: '掘金', shortName: '掘金', color: '#1e80ff' },
 ]
 
 export const categories: CategoryMeta[] = [

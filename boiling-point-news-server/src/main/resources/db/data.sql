@@ -10,6 +10,8 @@ VALUES
     ('百度', 'BAIDU', NULL, 1, 30),
     ('抖音', 'DOUYIN', NULL, 1, 40),
     ('今日头条', 'TOUTIAO', NULL, 1, 50),
+    ('哔哩哔哩', 'BILIBILI', NULL, 1, 60),
+    ('掘金', 'JUEJIN', NULL, 1, 70),
     ('其他', 'OTHER', NULL, 1, 99) AS `incoming`
 ON DUPLICATE KEY UPDATE
     `name` = `incoming`.`name`,

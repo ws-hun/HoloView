@@ -1,4 +1,4 @@
-export type HotSource = 'WEIBO' | 'ZHIHU' | 'BAIDU' | 'DOUYIN' | 'TOUTIAO' | 'OTHER'
+export type HotSource = 'WEIBO' | 'ZHIHU' | 'BAIDU' | 'DOUYIN' | 'TOUTIAO' | 'BILIBILI' | 'JUEJIN' | 'OTHER'
 export type HotCategory =
   | 'GENERAL'
   | 'SOCIETY'

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { CircleEllipsis } from 'lucide-vue-next'
-import { siBaidu, siSinaweibo, siTiktok, siZhihu } from 'simple-icons'
+import { siBaidu, siBilibili, siJuejin, siSinaweibo, siTiktok, siZhihu } from 'simple-icons'
 import type { HotSource } from '@/types/hot'
 
 const props = defineProps<{ source: HotSource }>()
@@ -11,6 +11,8 @@ const brandIcons: Partial<Record<HotSource, { path: string; hex: string }>> = {
   ZHIHU: siZhihu,
   BAIDU: siBaidu,
   DOUYIN: siTiktok,
+  BILIBILI: siBilibili,
+  JUEJIN: siJuejin,
 }
 
 const brandIcon = computed(() => brandIcons[props.source])
