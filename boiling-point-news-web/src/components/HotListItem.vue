@@ -13,6 +13,11 @@ function trendText() {
   if (props.item.rankChange === 0) return '热度'
   return `${Math.abs(props.item.rankChange)}`
 }
+
+function displayTime() {
+  const value = formatTime(props.item.updatedAt)
+  return props.compact ? value.slice(-5) : value
+}
 </script>
 
 <template>
@@ -23,7 +28,7 @@ function trendText() {
       <p v-if="!compact" class="hot-item-description">{{ item.description }}</p>
       <div class="hot-item-meta">
         <span class="source-label" :style="{ '--source-color': sourceColors[item.source] }"><i class="source-dot" />{{ item.sourceName }}</span>
-        <span>{{ formatTime(item.updatedAt) }}</span>
+        <span>{{ displayTime() }}</span>
         <span class="trend-badge" :class="`trend-${item.trend.toLowerCase()}`">
           <ArrowUp v-if="item.trend === 'UP'" :size="12" /><ArrowDown v-else-if="item.trend === 'DOWN'" :size="12" /><Sparkles v-else-if="item.trend === 'NEW'" :size="11" /><Minus v-else :size="11" />
           {{ trendText() }}
