@@ -19,4 +19,7 @@ public interface HotItemMapper extends BaseMapper<HotItemEntity> {
             @Param("excludeId") Long excludeId,
             @Param("limit") int limit
     );
+
+    HotItemEntity selectBySourceAndKey(@Param("source") com.boilingpoint.news.common.enums.HotSource source,
+                                       @Param("sourceItemKey") String sourceItemKey);
 }

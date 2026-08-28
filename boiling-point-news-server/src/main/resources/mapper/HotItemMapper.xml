@@ -49,4 +49,13 @@
         ORDER BY hot_value DESC, updated_at DESC
         LIMIT #{limit}
     </select>
+
+    <select id="selectBySourceAndKey" resultType="com.boilingpoint.news.entity.HotItemEntity">
+        SELECT <include refid="hotItemColumns" />
+        FROM hot_item
+        WHERE source = #{source}
+          AND source_item_key = #{sourceItemKey}
+          AND deleted = 0
+        LIMIT 1
+    </select>
 </mapper>

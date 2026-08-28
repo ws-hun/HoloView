@@ -195,18 +195,20 @@ GET /api/sse/hot
 - Entity、DTO、VO、Converter。
 - MyBatis-Plus Mapper 与 H2 集成测试。
 - 热点查询、搜索、排行、趋势和平台/分类 Service。
+- REST Controller、接口参数校验与请求链路日志。
+- Redis Cache-Aside 缓存服务。
+- Mock Collector、Collector Registry、定时采集、热点 upsert、排名变化计算和历史快照写入。
 - Vue 首页、热榜、分类、趋势、详情、搜索和 Mock 实时流。
 
 进行中：
 
-- REST Controller 与接口联调。
-- Redis Cache-Aside 缓存服务。
-- Mock Collector、热点历史写入和 SSE 服务端推送。
+- 前后端 Live 模式接口联调。
+- SSE 服务端推送。
 - MySQL、Redis、前后端一键启动配置。
 
 ## 路线图
 
-1. 完成 Mock Collector 调度、热度历史和 SSE 服务端事件。
+1. 完成 SSE 服务端连接管理、心跳与热点更新事件。
 2. 接入第一个真实平台数据源，并增加失败降级和限流。
 3. 增加关键词订阅、收藏、AI 摘要和舆情聚类。
 

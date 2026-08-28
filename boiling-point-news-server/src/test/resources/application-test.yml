@@ -21,3 +21,8 @@ mybatis-plus:
 logging:
   level:
     com.boilingpoint.news.mapper: debug
+
+app:
+  collector:
+    initial-delay: 60000
+    fixed-delay: 60000

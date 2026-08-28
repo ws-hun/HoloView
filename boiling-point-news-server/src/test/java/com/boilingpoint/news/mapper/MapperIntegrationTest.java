@@ -61,6 +61,7 @@ class MapperIntegrationTest {
                 .rankChange(0)
                 .trend(HotTrend.NEW)
                 .status(1)
+                .updatedAt(LocalDateTime.of(2026, 8, 27, 17, 20))
                 .deleted(0)
                 .build();
 

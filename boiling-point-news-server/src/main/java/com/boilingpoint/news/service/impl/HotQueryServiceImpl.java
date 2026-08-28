@@ -16,7 +16,6 @@ import com.boilingpoint.news.service.HotCacheService;
 import com.boilingpoint.news.vo.HotDetailVO;
 import com.boilingpoint.news.vo.HotItemVO;
 import com.boilingpoint.news.vo.HotTrendPointVO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
