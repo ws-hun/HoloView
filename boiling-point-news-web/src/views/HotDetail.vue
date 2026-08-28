@@ -15,6 +15,12 @@ const route = useRoute()
 const item = ref<HotItem | null>(null)
 const trend = ref<TrendPoint[]>([])
 const related = computed(() => item.value ? hotStore.latestHotItems.filter((candidate) => candidate.id !== item.value?.id && candidate.category === item.value?.category).slice(0, 4) : [])
+const sourceDetailUrl = computed(() => {
+  if (!item.value) return ''
+  if (import.meta.env.VITE_DATA_MODE !== 'live') return item.value.sourceUrl
+  const apiBase = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '')
+  return `${apiBase}/hot/${item.value.id}/source`
+})
 
 async function load() {
   await hotStore.initialize()
@@ -45,7 +51,7 @@ onMounted(load)
           <div class="page-kicker">热点详情 · {{ item.categoryName }}</div>
           <h1 class="detail-title">{{ item.title }}</h1>
           <p class="detail-description">{{ item.description }}</p>
-          <div class="detail-meta-row"><span class="source-label"><i class="source-dot" />{{ item.sourceName }}</span><span>发布于 {{ formatTime(item.publishedAt) }}</span><span>更新于 {{ formatTime(item.updatedAt) }}</span><a class="source-link" :href="item.sourceUrl" target="_blank" rel="noreferrer">打开原始来源 <ExternalLink :size="13" /></a></div>
+          <div class="detail-meta-row"><span class="source-label"><i class="source-dot" />{{ item.sourceName }}</span><span>发布于 {{ formatTime(item.publishedAt) }}</span><span>更新于 {{ formatTime(item.updatedAt) }}</span><a v-if="sourceDetailUrl" class="source-link" :href="sourceDetailUrl" target="_blank" rel="noreferrer">打开报道详情 <ExternalLink :size="13" /></a></div>
           <div class="detail-metrics"><div class="detail-metric"><div class="detail-metric-label">当前排名</div><div class="detail-metric-value">#{{ item.rank }}</div></div><div class="detail-metric"><div class="detail-metric-label">当前热度</div><div class="detail-metric-value">{{ item.hotValueText || formatHotValue(item.hotValue) }}</div></div><div class="detail-metric"><div class="detail-metric-label">排名变化</div><div class="detail-metric-value" :class="item.rankChange >= 0 ? 'trend-up' : 'trend-down'"><ArrowUp v-if="item.rankChange >= 0" :size="18" style="vertical-align:-2px" />{{ Math.abs(item.rankChange) || '—' }}</div></div></div>
         </div>
         <img class="detail-cover" :src="item.cover" :alt="item.title" />

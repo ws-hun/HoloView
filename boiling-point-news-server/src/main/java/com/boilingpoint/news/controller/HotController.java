@@ -5,6 +5,7 @@ import com.boilingpoint.news.dto.HotItemQueryDTO;
 import com.boilingpoint.news.dto.HotSearchQueryDTO;
 import com.boilingpoint.news.dto.HotTrendQueryDTO;
 import com.boilingpoint.news.service.HotQueryService;
+import com.boilingpoint.news.service.HotSourceLinkService;
 import com.boilingpoint.news.vo.HotDetailVO;
 import com.boilingpoint.news.vo.HotItemVO;
 import com.boilingpoint.news.vo.HotTrendPointVO;
@@ -13,6 +14,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -30,6 +34,7 @@ import java.util.List;
 public class HotController {
 
     private final HotQueryService hotQueryService;
+    private final HotSourceLinkService hotSourceLinkService;
 
     @GetMapping("/list")
     public Result<List<HotItemVO>> list(@Valid HotItemQueryDTO query) {
@@ -43,6 +48,13 @@ public class HotController {
     public Result<HotDetailVO> detail(@PathVariable Long id) {
         log.debug("Hot detail request: hotId={}", id);
         return Result.success(hotQueryService.getDetail(id));
+    }
+
+    @GetMapping("/{id}/source")
+    public ResponseEntity<Void> source(@PathVariable Long id) {
+        URI location = hotSourceLinkService.resolve(id);
+        log.info("Hot source redirect: hotId={}, targetHost={}", id, location.getHost());
+        return ResponseEntity.status(HttpStatus.FOUND).location(location).build();
     }
 
     @GetMapping("/ranking")

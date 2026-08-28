@@ -6,6 +6,7 @@ import com.boilingpoint.news.dto.HotSearchQueryDTO;
 import com.boilingpoint.news.dto.HotTrendQueryDTO;
 import com.boilingpoint.news.exception.GlobalExceptionHandler;
 import com.boilingpoint.news.service.HotQueryService;
+import com.boilingpoint.news.service.HotSourceLinkService;
 import com.boilingpoint.news.vo.HotDetailVO;
 import com.boilingpoint.news.vo.HotItemVO;
 import com.boilingpoint.news.vo.HotTrendPointVO;
@@ -17,12 +18,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.net.URI;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,11 +35,14 @@ class HotControllerTest {
     @Mock
     private HotQueryService hotQueryService;
 
+    @Mock
+    private HotSourceLinkService hotSourceLinkService;
+
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new HotController(hotQueryService))
+        mockMvc = MockMvcBuilders.standaloneSetup(new HotController(hotQueryService, hotSourceLinkService))
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
     }
@@ -62,6 +68,17 @@ class HotControllerTest {
                 .andExpect(jsonPath("$.data").isMap());
 
         verify(hotQueryService).getDetail(12L);
+    }
+
+    @Test
+    void shouldRedirectToResolvedSourceDetail() throws Exception {
+        when(hotSourceLinkService.resolve(12L)).thenReturn(URI.create("https://news.example.com/story/12"));
+
+        mockMvc.perform(get("/api/hot/12/source"))
+                .andExpect(status().isFound())
+                .andExpect(header().string("Location", "https://news.example.com/story/12"));
+
+        verify(hotSourceLinkService).resolve(12L);
     }
 
     @Test
