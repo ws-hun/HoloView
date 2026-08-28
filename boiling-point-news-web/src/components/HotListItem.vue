@@ -27,7 +27,7 @@ function displayTime() {
       <RouterLink :to="`/hot/${item.id}`" class="hot-item-title">{{ item.title }}</RouterLink>
       <p v-if="!compact" class="hot-item-description">{{ item.description }}</p>
       <div class="hot-item-meta">
-        <span class="source-label" :style="{ '--source-color': sourceColors[item.source] }"><i class="source-dot" />{{ item.sourceName }}</span>
+        <RouterLink :to="`/hot/${item.id}`" class="source-label hot-item-source-link" :style="{ '--source-color': sourceColors[item.source] }"><i class="source-dot" />{{ item.sourceName }}</RouterLink>
         <span>{{ displayTime() }}</span>
         <span class="trend-badge" :class="`trend-${item.trend.toLowerCase()}`">
           <ArrowUp v-if="item.trend === 'UP'" :size="12" /><ArrowDown v-else-if="item.trend === 'DOWN'" :size="12" /><Sparkles v-else-if="item.trend === 'NEW'" :size="11" /><Minus v-else :size="11" />

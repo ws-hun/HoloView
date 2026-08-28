@@ -88,6 +88,7 @@ a { color: inherit; text-decoration: none; }
 .hot-item-meta { display: flex; align-items: center; gap: 9px; margin-top: 10px; color: var(--soft); font-size: 11px; }
 .hot-item-meta > span { min-width: 0; }
 .source-label { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); font-weight: 700; }
+.hot-item-source-link:hover { color: var(--red); }
 .source-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--source-color, var(--red)); }
 .trend-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 760; }
 .trend-up { color: var(--green); }
