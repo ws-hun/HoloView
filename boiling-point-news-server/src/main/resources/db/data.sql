@@ -12,6 +12,9 @@ VALUES
     ('今日头条', 'TOUTIAO', NULL, 1, 50),
     ('哔哩哔哩', 'BILIBILI', NULL, 1, 60),
     ('掘金', 'JUEJIN', NULL, 1, 70),
+    ('澎湃新闻', 'THE_PAPER', NULL, 1, 80),
+    ('IT之家', 'ITHOME', NULL, 1, 81),
+    ('36氪', 'KR36', NULL, 1, 82),
     ('其他', 'OTHER', NULL, 1, 99) AS `incoming`
 ON DUPLICATE KEY UPDATE
     `name` = `incoming`.`name`,

@@ -11,6 +11,9 @@ export const platforms: PlatformMeta[] = [
   { code: 'TOUTIAO', name: '今日头条', shortName: '头条', color: '#f04438' },
   { code: 'BILIBILI', name: '哔哩哔哩', shortName: 'B站', color: '#00aeec' },
   { code: 'JUEJIN', name: '掘金', shortName: '掘金', color: '#1e80ff' },
+  { code: 'THE_PAPER', name: '澎湃新闻', shortName: '澎湃', color: '#1f6fb2' },
+  { code: 'ITHOME', name: 'IT之家', shortName: 'IT之家', color: '#1677ff' },
+  { code: 'KR36', name: '36氪', shortName: '36氪', color: '#222' },
 ]
 
 export const categories: CategoryMeta[] = [

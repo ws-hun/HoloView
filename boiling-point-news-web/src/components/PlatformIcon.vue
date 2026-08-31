@@ -19,6 +19,9 @@ const brandIcon = computed(() => brandIcons[props.source])
 const iconColor = computed(() => {
   if (brandIcon.value) return `#${brandIcon.value.hex}`
   if (props.source === 'TOUTIAO') return '#ff373c'
+  if (props.source === 'THE_PAPER') return '#1f6fb2'
+  if (props.source === 'ITHOME') return '#1677ff'
+  if (props.source === 'KR36') return '#222'
   return '#7c858b'
 })
 </script>

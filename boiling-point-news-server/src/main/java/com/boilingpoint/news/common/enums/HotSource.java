@@ -16,6 +16,9 @@ public enum HotSource {
     TOUTIAO("TOUTIAO", "今日头条"),
     BILIBILI("BILIBILI", "哔哩哔哩"),
     JUEJIN("JUEJIN", "掘金"),
+    THE_PAPER("THE_PAPER", "澎湃新闻"),
+    ITHOME("ITHOME", "IT之家"),
+    KR36("KR36", "36氪"),
     OTHER("OTHER", "其他");
 
     @EnumValue
