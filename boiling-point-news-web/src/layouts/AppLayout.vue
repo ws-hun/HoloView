@@ -9,7 +9,7 @@ const router = useRouter()
 const searchValue = ref('')
 const menuOpen = ref(false)
 const dataSourceLabel = import.meta.env.VITE_DATA_MODE === 'live'
-  ? '当前接入百度公开热榜'
+  ? '当前聚合多个公开信息源'
   : '当前使用本地 Mock 热点流'
 const navItems = [
   { name: '首页', to: '/', icon: '◉' },
