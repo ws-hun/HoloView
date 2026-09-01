@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { ArrowRight, BarChart3 } from 'lucide-vue-next'
 import { hotApi } from '@/api/hot'
 import HotList from '@/components/HotList.vue'
+import HotListSkeleton from '@/components/HotListSkeleton.vue'
 import PlatformTabs from '@/components/PlatformTabs.vue'
 import { useHotStore } from '@/stores/hot'
 import { formatClock } from '@/utils/format'
@@ -55,13 +56,7 @@ onMounted(() => hotStore.initialize())
       <section class="board-list" :aria-busy="sourceLoading">
         <div class="section-head"><div><h2 class="section-title">{{ activeName }}</h2><span class="section-note">{{ sourceLoading ? '正在加载' : `${items.length} 个正在发生的讨论` }}</span></div><BarChart3 :size="19" color="#9aa0a6" /></div>
         <div class="board-list-content">
-          <div v-if="sourceLoading" class="hot-list board-loading-list" role="status" aria-label="正在加载平台热点">
-            <div v-for="index in 6" :key="index" class="hot-list-item board-loading-row" aria-hidden="true">
-              <span class="skeleton-block skeleton-rank" />
-              <div><span class="skeleton-block skeleton-title" /><span class="skeleton-block skeleton-meta" /></div>
-              <div><span class="skeleton-block skeleton-score" /><span class="skeleton-block skeleton-track" /></div>
-            </div>
-          </div>
+          <HotListSkeleton v-if="sourceLoading" />
           <HotList v-else :items="items" :limit="50" />
         </div>
       </section>

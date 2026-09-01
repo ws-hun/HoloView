@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
-import { Flame, Menu, Search, X } from 'lucide-vue-next'
+import { Flame, House, ListOrdered, Menu, Search, Tags, TrendingUp, X } from 'lucide-vue-next'
 import SseStatus from '@/components/SseStatus.vue'
 
 const route = useRoute()
@@ -12,10 +12,10 @@ const dataSourceLabel = import.meta.env.VITE_DATA_MODE === 'live'
   ? '当前聚合多个公开信息源'
   : '当前使用本地 Mock 热点流'
 const navItems = [
-  { name: '首页', to: '/', icon: '◉' },
-  { name: '热榜', to: '/boards', icon: '↗' },
-  { name: '分类', to: '/category', icon: '◌' },
-  { name: '趋势', to: '/trends', icon: '⌁' },
+  { name: '首页', to: '/', icon: House },
+  { name: '热榜', to: '/boards', icon: ListOrdered },
+  { name: '分类', to: '/category', icon: Tags },
+  { name: '趋势', to: '/trends', icon: TrendingUp },
 ]
 
 const isDetail = computed(() => route.name === 'hot-detail')
@@ -39,7 +39,7 @@ function submitSearch() {
 
         <nav class="main-nav" aria-label="主导航">
           <RouterLink v-for="item in navItems" :key="item.to" :to="item.to" class="nav-link">
-            <span aria-hidden="true">{{ item.icon }}</span>{{ item.name }}
+            <component :is="item.icon" :size="15" aria-hidden="true" />{{ item.name }}
           </RouterLink>
         </nav>
 
@@ -56,7 +56,7 @@ function submitSearch() {
       </div>
       <nav v-if="menuOpen" class="header-mobile-nav" aria-label="移动端导航">
         <RouterLink v-for="item in navItems" :key="item.to" :to="item.to" class="nav-link" @click="menuOpen = false">
-          {{ item.name }}
+          <component :is="item.icon" :size="15" aria-hidden="true" />{{ item.name }}
         </RouterLink>
       </nav>
     </header>

@@ -5,6 +5,7 @@ import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { hotApi } from '@/api/hot'
 import CategoryTabs from '@/components/CategoryTabs.vue'
 import HotList from '@/components/HotList.vue'
+import HotListSkeleton from '@/components/HotListSkeleton.vue'
 import { useHotStore } from '@/stores/hot'
 import { logger } from '@/utils/logger'
 import type { HotCategory, HotItem } from '@/types/hot'
@@ -53,7 +54,7 @@ watch([() => route.params.code, () => hotStore.categories.length], () => {
   syncRoute()
   void loadCategory(active.value)
 }, { immediate: true })
-watch(() => hotStore.lastUpdateTime, () => void loadCategory(active.value))
+watch(() => hotStore.lastUpdateTime, () => { if (!loading.value) void loadCategory(active.value) })
 onMounted(() => void hotStore.initialize())
 </script>
 
@@ -64,9 +65,9 @@ onMounted(() => void hotStore.initialize())
     <p class="page-intro">聚合全部来源，按社会、科技、财经等主题查看跨平台榜单。</p>
     <div class="category-nav"><CategoryTabs :categories="hotStore.categories" :active="active" @select="selectCategory" /></div>
     <div class="category-content">
-      <section>
-        <div class="section-head"><div><h2 class="section-title">{{ activeName }}热榜</h2><span class="section-note">{{ items.length }} 条 · 来自 {{ sourceCount }} 个平台 · 原榜位次优先</span></div><Tags :size="19" color="#9aa0a6" /></div>
-        <div v-if="loading" class="loading-line" aria-label="正在加载分类热榜" />
+      <section :aria-busy="loading">
+        <div class="section-head"><div><h2 class="section-title">{{ activeName }}热榜</h2><span class="section-note">{{ loading ? '正在加载' : `${items.length} 条 · 来自 ${sourceCount} 个平台 · 原榜位次优先` }}</span></div><Tags :size="19" color="#9aa0a6" /></div>
+        <HotListSkeleton v-if="loading" />
         <HotList v-else :items="items" :limit="50" sequential-rank />
       </section>
       <aside class="side-stack board-side">
