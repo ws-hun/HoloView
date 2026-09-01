@@ -14,6 +14,8 @@ export const platforms: PlatformMeta[] = [
   { code: 'THE_PAPER', name: '澎湃新闻', shortName: '澎湃', color: '#1f6fb2' },
   { code: 'ITHOME', name: 'IT之家', shortName: 'IT之家', color: '#1677ff' },
   { code: 'KR36', name: '36氪', shortName: '36氪', color: '#222' },
+  { code: 'JIN10', name: '金十数据', shortName: '金十', color: '#1769aa' },
+  { code: 'HACKER_NEWS', name: 'Hacker News', shortName: 'HN', color: '#ff6600' },
 ]
 
 export const categories: CategoryMeta[] = [

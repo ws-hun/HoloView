@@ -19,6 +19,8 @@ public enum HotSource {
     THE_PAPER("THE_PAPER", "澎湃新闻"),
     ITHOME("ITHOME", "IT之家"),
     KR36("KR36", "36氪"),
+    JIN10("JIN10", "金十数据"),
+    HACKER_NEWS("HACKER_NEWS", "Hacker News"),
     OTHER("OTHER", "其他");
 
     @EnumValue

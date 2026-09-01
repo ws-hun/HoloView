@@ -15,6 +15,8 @@ VALUES
     ('澎湃新闻', 'THE_PAPER', NULL, 1, 80),
     ('IT之家', 'ITHOME', NULL, 1, 81),
     ('36氪', 'KR36', NULL, 1, 82),
+    ('金十数据', 'JIN10', NULL, 1, 83),
+    ('Hacker News', 'HACKER_NEWS', NULL, 1, 84),
     ('其他', 'OTHER', NULL, 1, 99) AS `incoming`
 ON DUPLICATE KEY UPDATE
     `name` = `incoming`.`name`,

@@ -22,6 +22,8 @@ const iconColor = computed(() => {
   if (props.source === 'THE_PAPER') return '#1f6fb2'
   if (props.source === 'ITHOME') return '#1677ff'
   if (props.source === 'KR36') return '#222'
+  if (props.source === 'JIN10') return '#1769aa'
+  if (props.source === 'HACKER_NEWS') return '#ff6600'
   return '#7c858b'
 })
 </script>
