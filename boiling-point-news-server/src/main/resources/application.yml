@@ -84,6 +84,11 @@ app:
       item-url: ${HACKER_NEWS_ITEM_URL:https://hacker-news.firebaseio.com/v0/item/}
       limit: ${HACKER_NEWS_COLLECTOR_LIMIT:30}
       timeout: ${HACKER_NEWS_COLLECTOR_TIMEOUT:10s}
+    wallstreet-cn:
+      enabled: ${WALLSTREET_CN_COLLECTOR_ENABLED:true}
+      url: ${WALLSTREET_CN_COLLECTOR_URL:https://api-one-wscn.awtmt.com/apiv1/content/lives?channel=global-channel&limit=30}
+      limit: ${WALLSTREET_CN_COLLECTOR_LIMIT:30}
+      timeout: ${WALLSTREET_CN_COLLECTOR_TIMEOUT:10s}
   source-link:
     timeout: ${SOURCE_LINK_TIMEOUT:8s}
     cache-ttl: ${SOURCE_LINK_CACHE_TTL:30m}

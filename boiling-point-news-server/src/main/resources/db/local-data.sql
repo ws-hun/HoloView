@@ -11,6 +11,7 @@ INSERT INTO source_platform (name, code, status, sort) VALUES
 ('36氪', 'KR36', 1, 82),
 ('金十数据', 'JIN10', 1, 83),
 ('Hacker News', 'HACKER_NEWS', 1, 84),
+('华尔街见闻', 'WALLSTREET_CN', 1, 85),
 ('其他', 'OTHER', 1, 99);
 
 INSERT INTO hot_category (name, code, status, sort) VALUES

@@ -8,16 +8,16 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Status](https://img.shields.io/badge/status-active_development-e72b31)](#开发状态)
 
-沸点速报是一个面向普通用户的实时热点聚合项目。它把知乎、百度、今日头条、哔哩哔哩、掘金、澎湃新闻、IT之家、36 氪、金十数据和 Hacker News 的公开内容统一成一套可比较的榜单数据，让用户打开页面就能知道“现在大家都在讨论什么”。微博和抖音保留为平台模型，待有稳定且合规的公开入口后接入。
+沸点速报是一个面向普通用户的实时热点聚合项目。它把知乎、百度、今日头条、哔哩哔哩、掘金、澎湃新闻、IT之家、36 氪、金十数据、Hacker News 和华尔街见闻的公开内容统一成一套可比较的榜单数据，让用户打开页面就能知道“现在大家都在讨论什么”。微博和抖音保留为平台模型，待有稳定且合规的公开入口后接入。
 
-当前版本已经接入十个公开数据来源，并具备完整的前后端分层、数据库模型、榜单查询、趋势曲线、SSE 实时更新和响应式前端。开发与测试环境仍保留 Mock Collector，新增平台只需实现统一采集接口，不需要重写页面。
+当前版本已经接入十一个公开数据来源，并具备完整的前后端分层、数据库模型、榜单查询、趋势曲线、SSE 实时更新和响应式前端。开发与测试环境仍保留 Mock Collector，新增平台只需实现统一采集接口，不需要重写页面。
 
 ![沸点速报首页预览](docs/preview.jpg)
 
 ## 特性
 
 - 综合热榜：按统一热度排序，展示排名、排名变化、来源和更新时间。
-- 真实数据：低频采集十个公开来源，映射标题、摘要、排名、热度（有来源数值时）、封面与原始链接。
+- 真实数据：低频采集十一个公开来源，映射标题、摘要、排名、热度（有来源数值时）、封面与原始链接。
 - 多平台模型：微博、知乎、百度、抖音、今日头条使用统一字段和独立筛选入口。
 - 分类浏览：综合、社会、科技、娱乐、体育、财经、国际、游戏、汽车、生活。
 - 热点详情：原始来源、当前热度、排名变化、24 小时趋势和相关热点。
@@ -158,7 +158,7 @@ npm run dev
 
 ## 真实数据源
 
-当前已接入十个无需授权的公开数据源：百度热榜、知乎 `hot-list-web`、今日头条热榜、哔哩哔哩热门视频、掘金文章热榜、澎湃新闻热榜、IT之家列表页、36 氪快讯页、金十数据公开快讯脚本，以及 Hacker News Firebase Top Stories。Hacker News 通过官方公开接口按榜单 ID 拉取条目详情，金十解析公开 `newest` 数据；这些采集器均保存平台原始详情地址，直接跳转到对应文章、视频或快讯页面。
+当前已接入十一个无需授权的公开数据源：百度热榜、知乎 `hot-list-web`、今日头条热榜、哔哩哔哩热门视频、掘金文章热榜、澎湃新闻热榜、IT之家列表页、36 氪快讯页、金十数据公开快讯脚本、Hacker News Firebase Top Stories，以及华尔街见闻公开快讯流。Hacker News 通过官方公开接口按榜单 ID 拉取条目详情，金十与华尔街见闻解析公开快讯数据；这些采集器均保存平台原始详情地址，直接跳转到对应文章、视频或快讯页面。
 
 微博暂不接入：公开页面会跳转微博访客身份页，NewsNow 使用了硬编码访客 Cookie，不能作为本项目的稳定数据源。抖音暂不接入：公开热榜依赖动态签名和风控校验，直接抓取会返回空响应或验证页。本项目不会绕过这些限制；后续如有官方授权或无需身份验证的稳定公开入口，再增加对应采集器。
 
@@ -184,6 +184,7 @@ export ITHOME_COLLECTOR_ENABLED=true
 export KR36_COLLECTOR_ENABLED=true
 export JIN10_COLLECTOR_ENABLED=true
 export HACKER_NEWS_COLLECTOR_ENABLED=true
+export WALLSTREET_CN_COLLECTOR_ENABLED=true
 export COLLECTOR_INITIAL_DELAY=10000
 export COLLECTOR_FIXED_DELAY=60000
 ```
@@ -231,6 +232,10 @@ export COLLECTOR_FIXED_DELAY=60000
 | `HACKER_NEWS_ITEM_URL` | Firebase Item 接口前缀 | 便于测试时替换为本地样例 |
 | `HACKER_NEWS_COLLECTOR_LIMIT` | `30` | 单次最多保留的榜单条数，范围 1-50 |
 | `HACKER_NEWS_COLLECTOR_TIMEOUT` | `10s` | 单次 HTTP 请求超时 |
+| `WALLSTREET_CN_COLLECTOR_ENABLED` | `true` | 是否启用华尔街见闻真实数据源 |
+| `WALLSTREET_CN_COLLECTOR_URL` | 华尔街见闻公开快讯接口 | 便于测试时替换为本地样例 |
+| `WALLSTREET_CN_COLLECTOR_LIMIT` | `30` | 单次最多保留的榜单条数，范围 1-50 |
+| `WALLSTREET_CN_COLLECTOR_TIMEOUT` | `10s` | 单次 HTTP 请求超时 |
 | `COLLECTOR_FIXED_DELAY` | `60000` | 两次采集完成时间之间的间隔，建议不要低于一分钟 |
 
 采集成功后，同平台已离榜的旧数据会标记为下线；请求失败、页面结构变化或返回空榜时，本批次不会覆盖已有数据，异常原因和耗时会写入后端日志。公开页面结构可能调整，因此生产使用前应评估目标站点规则并持续监控采集失败率。

@@ -16,6 +16,7 @@ export const platforms: PlatformMeta[] = [
   { code: 'KR36', name: '36氪', shortName: '36氪', color: '#222' },
   { code: 'JIN10', name: '金十数据', shortName: '金十', color: '#1769aa' },
   { code: 'HACKER_NEWS', name: 'Hacker News', shortName: 'HN', color: '#ff6600' },
+  { code: 'WALLSTREET_CN', name: '华尔街见闻', shortName: '见闻', color: '#c49a32' },
 ]
 
 export const categories: CategoryMeta[] = [

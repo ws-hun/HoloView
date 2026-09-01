@@ -13,6 +13,10 @@ const currentTime = ref(new Date().toISOString())
 let clockTimer: number | null = null
 
 const query = computed(() => typeof route.query.q === 'string' ? route.query.q.trim() : '')
+const currentDate = computed(() => new Intl.DateTimeFormat('zh-CN', {
+  month: '2-digit',
+  day: '2-digit',
+}).format(new Date(currentTime.value)).replace('/', '月') + '日')
 const filteredItems = computed(() => {
   if (!query.value) return hotStore.latestHotItems
   const keyword = query.value.toLowerCase()
@@ -35,9 +39,9 @@ onBeforeUnmount(() => { if (clockTimer !== null) window.clearInterval(clockTimer
   <div class="page-shell">
     <section class="home-intro">
       <div>
-        <div class="page-kicker">今日焦点 · 08月27日</div>
+        <div class="page-kicker">今日焦点 · {{ currentDate }}</div>
         <h1 class="page-title">今天，大家<br class="hidden md:block" />都在看什么</h1>
-        <p class="page-intro">聚合微博、知乎、百度、抖音和今日头条热搜，按热度统一排序。先看发生了什么，再决定要不要深入。</p>
+        <p class="page-intro">聚合多个公开新闻与社区榜单，按热度统一排序。先看发生了什么，再决定要不要深入。</p>
       </div>
       <div class="live-clock">
         <span class="live-label"><i class="live-dot" />{{ hotStore.dataMode === 'mock' ? '演示数据 · 模拟实时' : '数据流实时连接' }}</span>

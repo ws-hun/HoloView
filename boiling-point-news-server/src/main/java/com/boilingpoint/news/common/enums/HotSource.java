@@ -21,6 +21,7 @@ public enum HotSource {
     KR36("KR36", "36氪"),
     JIN10("JIN10", "金十数据"),
     HACKER_NEWS("HACKER_NEWS", "Hacker News"),
+    WALLSTREET_CN("WALLSTREET_CN", "华尔街见闻"),
     OTHER("OTHER", "其他");
 
     @EnumValue

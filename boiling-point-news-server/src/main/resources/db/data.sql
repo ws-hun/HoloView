@@ -17,6 +17,7 @@ VALUES
     ('36氪', 'KR36', NULL, 1, 82),
     ('金十数据', 'JIN10', NULL, 1, 83),
     ('Hacker News', 'HACKER_NEWS', NULL, 1, 84),
+    ('华尔街见闻', 'WALLSTREET_CN', NULL, 1, 85),
     ('其他', 'OTHER', NULL, 1, 99) AS `incoming`
 ON DUPLICATE KEY UPDATE
     `name` = `incoming`.`name`,
