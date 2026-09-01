@@ -1,10 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { ArrowDown, ArrowUp, ExternalLink, Minus, Sparkles } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
 import type { HotItem } from '@/types/hot'
 import { formatHotValue, formatTime } from '@/utils/format'
 
 const props = defineProps<{ item: HotItem; compact?: boolean }>()
+
+const sourceHref = computed(() => {
+  if (import.meta.env.VITE_DATA_MODE !== 'live') return props.item.sourceUrl
+  const apiBase = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '')
+  return `${apiBase}/hot/${props.item.id}/source`
+})
 
 const sourceColors: Record<string, string> = { WEIBO: '#e72b31', ZHIHU: '#1772f6', BAIDU: '#3b5bdb', DOUYIN: '#17191c', TOUTIAO: '#f04438', BILIBILI: '#00aeec', JUEJIN: '#1e80ff', THE_PAPER: '#1f6fb2', ITHOME: '#1677ff', KR36: '#222', JIN10: '#1769aa', HACKER_NEWS: '#ff6600', OTHER: '#7b8186' }
 function trendText() {
@@ -40,7 +47,7 @@ function displayTime() {
       <span class="hot-score-label">热度指数</span>
       <div class="heat-track"><div class="heat-fill" :style="{ width: `${Math.max(10, Math.round(item.hotValue / 985600))}%` }" /></div>
     </div>
-    <a v-if="compact" class="compact-external" :href="item.sourceUrl" target="_blank" rel="noreferrer" aria-label="打开来源"><ExternalLink :size="13" /></a>
+    <a v-if="compact && sourceHref" class="compact-external" :href="sourceHref" target="_blank" rel="noreferrer" aria-label="打开原文" title="打开原文"><ExternalLink :size="13" /></a>
   </article>
 </template>
 
