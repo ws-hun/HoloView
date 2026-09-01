@@ -187,10 +187,15 @@ a { color: inherit; text-decoration: none; }
 .loading-line { height: 4px; overflow: hidden; background: var(--line); }
 .loading-line::after { display: block; width: 34%; height: 100%; background: var(--red); animation: loading 1.1s ease-in-out infinite alternate; content: ""; }
 .board-list-content { position: relative; }
-.board-list-content .hot-list { transition: opacity .16s ease; }
-.board-list-content > .loading-line { position: absolute; z-index: 2; top: 0; right: 0; left: 0; border-radius: 4px 4px 0 0; }
-.board-list-content.loading .hot-list { opacity: .62; pointer-events: none; }
+.board-loading-row { pointer-events: none; }
+.skeleton-block { display: block; height: 10px; border-radius: 6px; background: #e5e5ea; animation: skeleton-pulse 1s ease-in-out infinite alternate; }
+.skeleton-rank { width: 28px; height: 20px; }
+.skeleton-title { width: min(72%, 420px); height: 14px; }
+.skeleton-meta { width: min(44%, 240px); margin-top: 14px; }
+.skeleton-score { width: 72px; height: 18px; margin-left: auto; }
+.skeleton-track { width: 100%; height: 4px; margin-top: 15px; }
 @keyframes loading { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+@keyframes skeleton-pulse { from { opacity: .52; } to { opacity: 1; } }
 
 .site-footer { border-top: 1px solid var(--line); }
 .footer-inner { display: flex; justify-content: space-between; gap: 30px; max-width: 1240px; margin: 0 auto; padding: 25px 30px 32px; color: var(--muted); font-size: 12px; }
