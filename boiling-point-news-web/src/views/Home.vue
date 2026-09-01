@@ -75,7 +75,7 @@ onBeforeUnmount(() => { if (clockTimer !== null) window.clearInterval(clockTimer
             <div><h2 class="section-title">{{ query ? `“${query}”的搜索结果` : '今日热榜' }}</h2><span class="section-note">按全网热度排序 · 每分钟刷新</span></div>
             <RouterLink to="/boards" class="source-link">完整热榜 <ArrowRight :size="14" /></RouterLink>
           </div>
-          <HotList :items="filteredItems" :limit="10" />
+          <HotList :items="filteredItems" :limit="10" sequential-rank />
         </div>
 
         <aside class="side-stack">

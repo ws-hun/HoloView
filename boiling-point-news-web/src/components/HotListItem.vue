@@ -5,7 +5,8 @@ import { RouterLink } from 'vue-router'
 import type { HotItem } from '@/types/hot'
 import { formatHotValue, formatTime } from '@/utils/format'
 
-const props = defineProps<{ item: HotItem; compact?: boolean }>()
+const props = defineProps<{ item: HotItem; compact?: boolean; displayRank?: number }>()
+const shownRank = computed(() => props.displayRank ?? props.item.rank)
 
 const sourceHref = computed(() => {
   if (import.meta.env.VITE_DATA_MODE !== 'live') return props.item.sourceUrl
@@ -29,7 +30,7 @@ function displayTime() {
 
 <template>
   <article class="hot-list-item" :class="{ compact }">
-    <span class="rank-number" :class="{ 'top-rank': item.rank <= 3 }">{{ String(item.rank).padStart(2, '0') }}</span>
+    <span class="rank-number" :class="{ 'top-rank': shownRank <= 3 }">{{ String(shownRank).padStart(2, '0') }}</span>
     <div>
       <RouterLink :to="`/hot/${item.id}`" class="hot-item-title">{{ item.title }}</RouterLink>
       <p v-if="!compact" class="hot-item-description">{{ item.description }}</p>

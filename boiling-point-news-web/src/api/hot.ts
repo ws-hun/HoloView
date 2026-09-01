@@ -53,4 +53,13 @@ export const hotApi = {
       () => categories,
     )
   },
+  categoryHot(category: HotCategory, limit = 50) {
+    return withMock(
+      async () => (await http.get<ApiResult<HotItem[]>>(`/category/${category}/hot`, { params: { limit } })).data.data,
+      () => mockHotItems
+        .filter((item) => category === 'GENERAL' || item.category === category)
+        .sort((a, b) => a.rank - b.rank || b.hotValue - a.hotValue)
+        .slice(0, limit),
+    )
+  },
 }

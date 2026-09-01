@@ -64,6 +64,21 @@ class MapperIntegrationTest {
     }
 
     @Test
+    void shouldOrderAggregatedCategoryItemsBySourceRankBeforeHotValue() {
+        hotItemMapper.insert(createCategoryItem("category-order-first", HotSource.WALLSTREET_CN, 2, 0L));
+        hotItemMapper.insert(createCategoryItem("category-order-second", HotSource.BAIDU, 12, 10_000L));
+        HotItemQueryDTO query = new HotItemQueryDTO();
+        query.setCategory(HotCategory.TECHNOLOGY);
+        query.setKeyword("category-order");
+        query.setLimit(10);
+
+        List<HotItemEntity> result = hotItemMapper.selectHotItems(query);
+
+        assertThat(result).extracting(HotItemEntity::getTitle)
+                .containsExactly("category-order-first", "category-order-second");
+    }
+
+    @Test
     void shouldUseEscapedRankColumnForGeneratedCrud() {
         HotItemEntity item = HotItemEntity.builder()
                 .title("Mapper新增热点")
@@ -137,6 +152,23 @@ class MapperIntegrationTest {
                 .trend(HotTrend.NEW)
                 .status(1)
                 .updatedAt(LocalDateTime.of(2026, 9, 1, 11, 0))
+                .deleted(0)
+                .build();
+    }
+
+    private HotItemEntity createCategoryItem(String key, HotSource source, int rank, long hotValue) {
+        return HotItemEntity.builder()
+                .title(key)
+                .source(source)
+                .sourceItemKey(key)
+                .category(HotCategory.TECHNOLOGY)
+                .hotValue(hotValue)
+                .hotValueText(hotValue == 0 ? "快讯" : String.valueOf(hotValue))
+                .rank(rank)
+                .rankChange(0)
+                .trend(HotTrend.NEW)
+                .status(1)
+                .updatedAt(LocalDateTime.of(2026, 9, 1, 12, 0))
                 .deleted(0)
                 .build();
     }

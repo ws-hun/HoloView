@@ -30,6 +30,9 @@
           <when test="query.source != null">
             ORDER BY `rank` ASC, updated_at DESC
           </when>
+          <when test="query.category != null">
+            ORDER BY `rank` ASC, hot_value DESC, updated_at DESC
+          </when>
           <otherwise>
             ORDER BY hot_value DESC, updated_at DESC
           </otherwise>
