@@ -22,6 +22,14 @@ public enum HotSource {
     JIN10("JIN10", "金十数据"),
     HACKER_NEWS("HACKER_NEWS", "Hacker News"),
     WALLSTREET_CN("WALLSTREET_CN", "华尔街见闻"),
+    NOWCODER("NOWCODER", "牛客"),
+    TIEBA("TIEBA", "百度贴吧"),
+    HUPU("HUPU", "虎扑"),
+    DOUBAN_MOVIE("DOUBAN_MOVIE", "豆瓣电影"),
+    GITHUB_TRENDING("GITHUB_TRENDING", "GitHub Trending"),
+    STEAM("STEAM", "Steam"),
+    SMZDM("SMZDM", "什么值得买"),
+    DONGQIUDI("DONGQIUDI", "懂球帝"),
     OTHER("OTHER", "其他");
 
     @EnumValue

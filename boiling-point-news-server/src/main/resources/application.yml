@@ -89,6 +89,47 @@ app:
       url: ${WALLSTREET_CN_COLLECTOR_URL:https://api-one-wscn.awtmt.com/apiv1/content/lives?channel=global-channel&limit=30}
       limit: ${WALLSTREET_CN_COLLECTOR_LIMIT:30}
       timeout: ${WALLSTREET_CN_COLLECTOR_TIMEOUT:10s}
+    nowcoder:
+      enabled: ${NOWCODER_COLLECTOR_ENABLED:true}
+      url: ${NOWCODER_COLLECTOR_URL:https://gw-c.nowcoder.com/api/sparta/hot-search/top-hot-pc?size=20&t=}
+      limit: ${NOWCODER_COLLECTOR_LIMIT:20}
+      timeout: ${NOWCODER_COLLECTOR_TIMEOUT:10s}
+    tieba:
+      enabled: ${TIEBA_COLLECTOR_ENABLED:true}
+      url: ${TIEBA_COLLECTOR_URL:https://tieba.baidu.com/hottopic/browse/topicList}
+      limit: ${TIEBA_COLLECTOR_LIMIT:30}
+      timeout: ${TIEBA_COLLECTOR_TIMEOUT:10s}
+    hupu:
+      enabled: ${HUPU_COLLECTOR_ENABLED:true}
+      url: ${HUPU_COLLECTOR_URL:https://bbs.hupu.com/topic-daily-hot}
+      limit: ${HUPU_COLLECTOR_LIMIT:20}
+      timeout: ${HUPU_COLLECTOR_TIMEOUT:10s}
+    douban-movie:
+      enabled: ${DOUBAN_MOVIE_COLLECTOR_ENABLED:true}
+      url: ${DOUBAN_MOVIE_COLLECTOR_URL:https://m.douban.com/rexxar/api/v2/subject/recent_hot/movie?start=0&limit=20&category=%E7%83%AD%E9%97%A8&type=%E5%85%A8%E9%83%A8}
+      limit: ${DOUBAN_MOVIE_COLLECTOR_LIMIT:20}
+      timeout: ${DOUBAN_MOVIE_COLLECTOR_TIMEOUT:10s}
+    github-trending:
+      enabled: ${GITHUB_TRENDING_COLLECTOR_ENABLED:true}
+      url: ${GITHUB_TRENDING_COLLECTOR_URL:https://github.com/trending?spoken_language_code=}
+      limit: ${GITHUB_TRENDING_COLLECTOR_LIMIT:25}
+      timeout: ${GITHUB_TRENDING_COLLECTOR_TIMEOUT:15s}
+    steam:
+      enabled: ${STEAM_COLLECTOR_ENABLED:true}
+      url: ${STEAM_COLLECTOR_URL:https://store.steampowered.com/stats/stats/}
+      limit: ${STEAM_COLLECTOR_LIMIT:30}
+      timeout: ${STEAM_COLLECTOR_TIMEOUT:10s}
+    smzdm:
+      enabled: ${SMZDM_COLLECTOR_ENABLED:true}
+      url: ${SMZDM_COLLECTOR_URL:https://post.smzdm.com/hot_1/}
+      fallback-url: ${SMZDM_COLLECTOR_FALLBACK_URL:https://post.smzdm.com/feed/}
+      limit: ${SMZDM_COLLECTOR_LIMIT:30}
+      timeout: ${SMZDM_COLLECTOR_TIMEOUT:10s}
+    dongqiudi:
+      enabled: ${DONGQIUDI_COLLECTOR_ENABLED:true}
+      url: ${DONGQIUDI_COLLECTOR_URL:https://api.dongqiudi.com/app/tabs/web/1.json}
+      limit: ${DONGQIUDI_COLLECTOR_LIMIT:20}
+      timeout: ${DONGQIUDI_COLLECTOR_TIMEOUT:10s}
   source-link:
     timeout: ${SOURCE_LINK_TIMEOUT:8s}
     cache-ttl: ${SOURCE_LINK_CACHE_TTL:30m}

@@ -1,4 +1,4 @@
-export type HotSource = 'WEIBO' | 'ZHIHU' | 'BAIDU' | 'DOUYIN' | 'TOUTIAO' | 'BILIBILI' | 'JUEJIN' | 'THE_PAPER' | 'ITHOME' | 'KR36' | 'JIN10' | 'HACKER_NEWS' | 'WALLSTREET_CN' | 'OTHER'
+export type HotSource = 'WEIBO' | 'ZHIHU' | 'BAIDU' | 'DOUYIN' | 'TOUTIAO' | 'BILIBILI' | 'JUEJIN' | 'THE_PAPER' | 'ITHOME' | 'KR36' | 'JIN10' | 'HACKER_NEWS' | 'WALLSTREET_CN' | 'NOWCODER' | 'TIEBA' | 'HUPU' | 'DOUBAN_MOVIE' | 'GITHUB_TRENDING' | 'STEAM' | 'SMZDM' | 'DONGQIUDI' | 'OTHER'
 export type HotCategory =
   | 'GENERAL'
   | 'SOCIETY'

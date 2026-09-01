@@ -14,7 +14,7 @@ const sourceHref = computed(() => {
   return `${apiBase}/hot/${props.item.id}/source`
 })
 
-const sourceColors: Record<string, string> = { WEIBO: '#e72b31', ZHIHU: '#1772f6', BAIDU: '#3b5bdb', DOUYIN: '#17191c', TOUTIAO: '#f04438', BILIBILI: '#00aeec', JUEJIN: '#1e80ff', THE_PAPER: '#1f6fb2', ITHOME: '#1677ff', KR36: '#222', JIN10: '#1769aa', HACKER_NEWS: '#ff6600', WALLSTREET_CN: '#c49a32', OTHER: '#7b8186' }
+const sourceColors: Record<string, string> = { WEIBO: '#e72b31', ZHIHU: '#1772f6', BAIDU: '#3b5bdb', DOUYIN: '#17191c', TOUTIAO: '#f04438', BILIBILI: '#00aeec', JUEJIN: '#1e80ff', THE_PAPER: '#1f6fb2', ITHOME: '#1677ff', KR36: '#222', JIN10: '#1769aa', HACKER_NEWS: '#ff6600', WALLSTREET_CN: '#c49a32', NOWCODER: '#00a98f', TIEBA: '#4e6ef2', HUPU: '#c51f25', DOUBAN_MOVIE: '#2e963d', GITHUB_TRENDING: '#24292f', STEAM: '#1b2838', SMZDM: '#e62828', DONGQIUDI: '#16a05d', OTHER: '#7b8186' }
 function trendText() {
   if (props.item.trend === 'NEW') return '新上榜'
   if (props.item.trend === 'STABLE') return '持平'

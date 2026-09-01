@@ -18,6 +18,14 @@ VALUES
     ('金十数据', 'JIN10', NULL, 1, 83),
     ('Hacker News', 'HACKER_NEWS', NULL, 1, 84),
     ('华尔街见闻', 'WALLSTREET_CN', NULL, 1, 85),
+    ('牛客', 'NOWCODER', NULL, 1, 86),
+    ('百度贴吧', 'TIEBA', NULL, 1, 87),
+    ('虎扑', 'HUPU', NULL, 1, 88),
+    ('豆瓣电影', 'DOUBAN_MOVIE', NULL, 1, 89),
+    ('GitHub Trending', 'GITHUB_TRENDING', NULL, 1, 90),
+    ('Steam', 'STEAM', NULL, 1, 91),
+    ('什么值得买', 'SMZDM', NULL, 1, 92),
+    ('懂球帝', 'DONGQIUDI', NULL, 1, 93),
     ('其他', 'OTHER', NULL, 1, 99) AS `incoming`
 ON DUPLICATE KEY UPDATE
     `name` = `incoming`.`name`,

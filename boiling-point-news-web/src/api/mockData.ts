@@ -17,6 +17,14 @@ export const platforms: PlatformMeta[] = [
   { code: 'JIN10', name: '金十数据', shortName: '金十', color: '#1769aa' },
   { code: 'HACKER_NEWS', name: 'Hacker News', shortName: 'HN', color: '#ff6600' },
   { code: 'WALLSTREET_CN', name: '华尔街见闻', shortName: '见闻', color: '#c49a32' },
+  { code: 'NOWCODER', name: '牛客', shortName: '牛客', color: '#00bc9b' },
+  { code: 'TIEBA', name: '百度贴吧', shortName: '贴吧', color: '#4e6ef2' },
+  { code: 'HUPU', name: '虎扑', shortName: '虎扑', color: '#c51f25' },
+  { code: 'DOUBAN_MOVIE', name: '豆瓣电影', shortName: '豆瓣', color: '#2e963d' },
+  { code: 'GITHUB_TRENDING', name: 'GitHub Trending', shortName: 'GitHub', color: '#24292f' },
+  { code: 'STEAM', name: 'Steam', shortName: 'Steam', color: '#1b2838' },
+  { code: 'SMZDM', name: '什么值得买', shortName: '值得买', color: '#e62828' },
+  { code: 'DONGQIUDI', name: '懂球帝', shortName: '懂球帝', color: '#16a05d' },
 ]
 
 export const categories: CategoryMeta[] = [

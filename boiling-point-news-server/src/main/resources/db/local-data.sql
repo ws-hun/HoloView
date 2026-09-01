@@ -12,6 +12,14 @@ INSERT INTO source_platform (name, code, status, sort) VALUES
 ('金十数据', 'JIN10', 1, 83),
 ('Hacker News', 'HACKER_NEWS', 1, 84),
 ('华尔街见闻', 'WALLSTREET_CN', 1, 85),
+('牛客', 'NOWCODER', 1, 86),
+('百度贴吧', 'TIEBA', 1, 87),
+('虎扑', 'HUPU', 1, 88),
+('豆瓣电影', 'DOUBAN_MOVIE', 1, 89),
+('GitHub Trending', 'GITHUB_TRENDING', 1, 90),
+('Steam', 'STEAM', 1, 91),
+('什么值得买', 'SMZDM', 1, 92),
+('懂球帝', 'DONGQIUDI', 1, 93),
 ('其他', 'OTHER', 1, 99);
 
 INSERT INTO hot_category (name, code, status, sort) VALUES

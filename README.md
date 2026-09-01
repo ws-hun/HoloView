@@ -8,17 +8,17 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Status](https://img.shields.io/badge/status-active_development-e72b31)](#开发状态)
 
-沸点速报是一个面向普通用户的实时热点聚合项目。它把知乎、百度、今日头条、哔哩哔哩、掘金、澎湃新闻、IT之家、36 氪、金十数据、Hacker News 和华尔街见闻的公开内容统一成一套可比较的榜单数据，让用户打开页面就能知道“现在大家都在讨论什么”。微博和抖音保留为平台模型，待有稳定且合规的公开入口后接入。
+沸点速报是一个面向普通用户的实时热点聚合项目。它把知乎、百度、今日头条、哔哩哔哩、掘金、澎湃新闻、IT之家、36 氪、金十数据、Hacker News、华尔街见闻、牛客、百度贴吧、虎扑、豆瓣电影、GitHub Trending、Steam、什么值得买和懂球帝的公开内容统一成可浏览、可分类的榜单数据，让用户打开页面就能知道“现在大家都在讨论什么”。微博和抖音保留为平台模型，待有稳定且合规的公开入口后接入。
 
-当前版本已经接入十一个公开数据来源，并具备完整的前后端分层、数据库模型、榜单查询、趋势曲线、SSE 实时更新和响应式前端。开发与测试环境仍保留 Mock Collector，新增平台只需实现统一采集接口，不需要重写页面。
+当前版本已经接入十九个无需授权的公开数据来源，并具备完整的前后端分层、数据库模型、榜单查询、趋势曲线、SSE 实时更新和响应式前端。开发与测试环境仍保留 Mock Collector，新增平台只需实现统一采集接口，不需要重写页面。
 
 ![沸点速报首页预览](docs/preview.jpg)
 
 ## 特性
 
 - 综合热榜：按统一热度排序，展示排名、排名变化、来源和更新时间。
-- 真实数据：低频采集十一个公开来源，映射标题、摘要、排名、热度（有来源数值时）、封面与原始链接。
-- 多平台模型：微博、知乎、百度、抖音、今日头条使用统一字段和独立筛选入口。
+- 真实数据：低频采集十九个公开来源，映射标题、摘要、原始排名、来源指标、封面与直达链接。
+- 多平台模型：十九个真实来源与两个预留平台使用统一字段和独立筛选入口。
 - 跨平台分类榜：聚合全部来源，按综合、社会、科技、娱乐、体育、财经、国际、游戏、汽车、生活独立排行。
 - 热点详情：原始来源、当前热度、排名变化、24 小时趋势和相关热点。
 - 实时更新：定时采集 + 历史快照 + SSE 事件流 + Pinia 状态联动。
@@ -80,7 +80,7 @@ npm run dev
 
 打开 <http://127.0.0.1:5173/>。
 
-默认使用 Mock 数据，不依赖 MySQL、Redis 或后端即可浏览完整页面。需要查看真实百度热榜时，请按“无 Docker 本地联调”启动 Live 模式。
+默认使用 Mock 数据，不依赖 MySQL、Redis 或后端即可浏览完整页面。需要查看真实公开数据时，请按“无 Docker 本地联调”启动 Live 模式。
 
 常用命令：
 
@@ -158,7 +158,9 @@ npm run dev
 
 ## 真实数据源
 
-当前已接入十一个无需授权的公开数据源：百度热榜、知乎 `hot-list-web`、今日头条热榜、哔哩哔哩热门视频、掘金文章热榜、澎湃新闻热榜、IT之家列表页、36 氪快讯页、金十数据公开快讯脚本、Hacker News Firebase Top Stories，以及华尔街见闻公开快讯流。Hacker News 通过官方公开接口按榜单 ID 拉取条目详情，金十与华尔街见闻解析公开快讯数据；这些采集器均保存平台原始详情地址，直接跳转到对应文章、视频或快讯页面。
+当前已接入十九个无需授权的公开数据源：百度热榜、知乎 `hot-list-web`、今日头条热榜、哔哩哔哩热门视频、掘金文章热榜、澎湃新闻热榜、IT之家列表页、36 氪快讯页、金十数据公开快讯脚本、Hacker News Firebase Top Stories、华尔街见闻公开快讯流、牛客热搜、百度贴吧热议榜、虎扑每日热帖、豆瓣近期热门电影、GitHub Trending、Steam 在线人数榜、什么值得买热门文章，以及懂球帝公开足球资讯流。所有条目均保存平台原始详情地址，点击来源时直接进入对应文章、帖子、项目、电影或游戏页面。
+
+来源指标不会被伪造成同一口径：贴吧使用讨论数，豆瓣使用评分人数并显示评分，GitHub 使用 Stars，Steam 使用当前在线人数，懂球帝使用评论数；没有公开数值的平台保留原榜顺序和描述性标签。懂球帝属于按发布时间排列的公开资讯流。什么值得买热榜页遇到公开验证码时自动切换到其官方 RSS，此时展示“最新文章”顺序，而不是声称为官方热度排名。每个来源失败时独立隔离，上一批有效数据不会被空结果覆盖。
 
 微博暂不接入：公开页面会跳转微博访客身份页，NewsNow 使用了硬编码访客 Cookie，不能作为本项目的稳定数据源。抖音暂不接入：公开热榜依赖动态签名和风控校验，直接抓取会返回空响应或验证页。本项目不会绕过这些限制；后续如有官方授权或无需身份验证的稳定公开入口，再增加对应采集器。
 
@@ -185,6 +187,14 @@ export KR36_COLLECTOR_ENABLED=true
 export JIN10_COLLECTOR_ENABLED=true
 export HACKER_NEWS_COLLECTOR_ENABLED=true
 export WALLSTREET_CN_COLLECTOR_ENABLED=true
+export NOWCODER_COLLECTOR_ENABLED=true
+export TIEBA_COLLECTOR_ENABLED=true
+export HUPU_COLLECTOR_ENABLED=true
+export DOUBAN_MOVIE_COLLECTOR_ENABLED=true
+export GITHUB_TRENDING_COLLECTOR_ENABLED=true
+export STEAM_COLLECTOR_ENABLED=true
+export SMZDM_COLLECTOR_ENABLED=true
+export DONGQIUDI_COLLECTOR_ENABLED=true
 export COLLECTOR_INITIAL_DELAY=10000
 export COLLECTOR_FIXED_DELAY=60000
 ```
@@ -236,6 +246,15 @@ export COLLECTOR_FIXED_DELAY=60000
 | `WALLSTREET_CN_COLLECTOR_URL` | 华尔街见闻公开快讯接口 | 便于测试时替换为本地样例 |
 | `WALLSTREET_CN_COLLECTOR_LIMIT` | `30` | 单次最多保留的榜单条数，范围 1-50 |
 | `WALLSTREET_CN_COLLECTOR_TIMEOUT` | `10s` | 单次 HTTP 请求超时 |
+| `NOWCODER_COLLECTOR_ENABLED` | `true` | 是否启用牛客热搜 |
+| `TIEBA_COLLECTOR_ENABLED` | `true` | 是否启用百度贴吧热议榜 |
+| `HUPU_COLLECTOR_ENABLED` | `true` | 是否启用虎扑每日热帖 |
+| `DOUBAN_MOVIE_COLLECTOR_ENABLED` | `true` | 是否启用豆瓣近期热门电影 |
+| `GITHUB_TRENDING_COLLECTOR_ENABLED` | `true` | 是否启用 GitHub Trending |
+| `STEAM_COLLECTOR_ENABLED` | `true` | 是否启用 Steam 在线人数榜 |
+| `SMZDM_COLLECTOR_ENABLED` | `true` | 是否启用什么值得买公开内容 |
+| `SMZDM_COLLECTOR_FALLBACK_URL` | 什么值得买官方 RSS | 热榜页被验证拦截时的公开兜底入口 |
+| `DONGQIUDI_COLLECTOR_ENABLED` | `true` | 是否启用懂球帝公开资讯流 |
 | `COLLECTOR_FIXED_DELAY` | `60000` | 两次采集完成时间之间的间隔，建议不要低于一分钟 |
 
 采集成功后，同平台已离榜的旧数据会标记为下线；请求失败、页面结构变化或返回空榜时，本批次不会覆盖已有数据，异常原因和耗时会写入后端日志。公开页面结构可能调整，因此生产使用前应评估目标站点规则并持续监控采集失败率。
@@ -289,7 +308,7 @@ GET /api/sse/hot
 - 热点列表、详情、最新榜和趋势查询使用 Redis Cache-Aside；缓存不可用时自动回源数据库，并记录缓存读写告警。
 - 每次 HTTP 请求都会生成或透传 `X-Request-Id`，响应头和日志均带该 ID，便于前后端串联排查。
 - 开发环境启用 MyBatis SQL 日志，便于检查 SQL、参数和结果。
-- 百度采集日志记录响应字节数、解析条数、持久化条数、离榜条数和批次耗时；失败保留上一批有效数据。
+- 采集日志记录来源、端点序号、响应字节数、解析条数、持久化条数、离榜条数和批次耗时；失败保留上一批有效数据。
 - 前端统一输出 `[沸点速报]` 前缀日志，记录 API 请求失败、SSE 连接/重连、Live 刷新和 Mock 更新。
 - 日志不包含密码、Token、完整连接串或其他敏感信息。
 
@@ -304,7 +323,7 @@ GET /api/sse/hot
 - 热点查询、搜索、排行、趋势和平台/分类 Service。
 - REST Controller、接口参数校验与请求链路日志。
 - Redis Cache-Aside 缓存服务。
-- 百度公开热榜采集器、关键词分类、结构化页面解析和字段标准化。
+- 十九个公开来源采集器、关键词分类、结构化页面解析和字段标准化。
 - Mock Collector、Collector Registry、定时采集、热点 upsert、离榜下线、排名变化计算和历史快照写入。
 - SSE 服务端连接管理、心跳和采集完成事件推送。
 - Vue 首页、热榜、分类、趋势、详情、搜索，以及 Live/Mock 双数据模式。
@@ -312,7 +331,7 @@ GET /api/sse/hot
 
 进行中：
 
-- 第二个公开真实数据源及跨平台去重。
+- 跨平台同事件聚类与去重。
 - 采集健康状态、失败率与数据新鲜度监控。
 
 ## 路线图
