@@ -49,6 +49,21 @@ class MapperIntegrationTest {
     }
 
     @Test
+    void shouldOrderPlatformItemsBySourceRankInsteadOfHotValue() {
+        HotItemEntity first = createPlatformItem("rank-first", 1, 0L);
+        HotItemEntity second = createPlatformItem("rank-second", 2, 10_000L);
+        hotItemMapper.insert(first);
+        hotItemMapper.insert(second);
+        HotItemQueryDTO query = new HotItemQueryDTO();
+        query.setSource(HotSource.JIN10);
+        query.setLimit(10);
+
+        List<HotItemEntity> result = hotItemMapper.selectHotItems(query);
+
+        assertThat(result).extracting(HotItemEntity::getRank).containsExactly(1, 2);
+    }
+
+    @Test
     void shouldUseEscapedRankColumnForGeneratedCrud() {
         HotItemEntity item = HotItemEntity.builder()
                 .title("Mapper新增热点")
@@ -107,5 +122,22 @@ class MapperIntegrationTest {
 
         assertThat(updated).isEqualTo(1);
         assertThat(hotItemMapper.selectById(101L).getStatus()).isZero();
+    }
+
+    private HotItemEntity createPlatformItem(String key, int rank, long hotValue) {
+        return HotItemEntity.builder()
+                .title(key)
+                .source(HotSource.JIN10)
+                .sourceItemKey(key)
+                .category(HotCategory.FINANCE)
+                .hotValue(hotValue)
+                .hotValueText("快讯")
+                .rank(rank)
+                .rankChange(0)
+                .trend(HotTrend.NEW)
+                .status(1)
+                .updatedAt(LocalDateTime.of(2026, 9, 1, 11, 0))
+                .deleted(0)
+                .build();
     }
 }

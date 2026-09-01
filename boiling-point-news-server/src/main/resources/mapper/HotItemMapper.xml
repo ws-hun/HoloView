@@ -26,7 +26,14 @@
           AND (title LIKE CONCAT('%', #{query.keyword}, '%')
                OR description LIKE CONCAT('%', #{query.keyword}, '%'))
         </if>
-        ORDER BY hot_value DESC, updated_at DESC
+        <choose>
+          <when test="query.source != null">
+            ORDER BY `rank` ASC, updated_at DESC
+          </when>
+          <otherwise>
+            ORDER BY hot_value DESC, updated_at DESC
+          </otherwise>
+        </choose>
         LIMIT #{query.limit}
     </select>
 
