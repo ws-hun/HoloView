@@ -48,6 +48,19 @@ app:
       url: ${ZHIHU_COLLECTOR_URL:https://www.zhihu.com/api/v3/feed/topstory/hot-list-web?limit=20&desktop=true}
       limit: ${ZHIHU_COLLECTOR_LIMIT:20}
       timeout: ${ZHIHU_COLLECTOR_TIMEOUT:10s}
+    weibo:
+      enabled: ${WEIBO_COLLECTOR_ENABLED:true}
+      url: ${WEIBO_COLLECTOR_URL:https://s.weibo.com/top/summary?cate=realtimehot}
+      fallback-url: ${WEIBO_COLLECTOR_FALLBACK_URL:}
+      cookie: ${WEIBO_COLLECTOR_COOKIE:}
+      limit: ${WEIBO_COLLECTOR_LIMIT:30}
+      timeout: ${WEIBO_COLLECTOR_TIMEOUT:10s}
+    douyin:
+      enabled: ${DOUYIN_COLLECTOR_ENABLED:true}
+      url: ${DOUYIN_COLLECTOR_URL:https://www.douyin.com/aweme/v1/web/hot/search/list/?device_platform=webapp&aid=6383&channel=channel_pc_web&detail_list=1}
+      fallback-url: ${DOUYIN_COLLECTOR_FALLBACK_URL:}
+      limit: ${DOUYIN_COLLECTOR_LIMIT:30}
+      timeout: ${DOUYIN_COLLECTOR_TIMEOUT:10s}
     bilibili:
       enabled: ${BILIBILI_COLLECTOR_ENABLED:true}
       url: ${BILIBILI_COLLECTOR_URL:https://api.bilibili.com/x/web-interface/popular?ps=30&pn=1}
