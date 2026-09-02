@@ -11,11 +11,6 @@ const tabsRef = ref<HTMLElement | null>(null)
 const canScrollLeft = ref(false)
 const canScrollRight = ref(false)
 let resizeObserver: ResizeObserver | null = null
-let dragPointerId: number | null = null
-let dragStartX = 0
-let dragStartScrollLeft = 0
-let didDrag = false
-const DRAG_THRESHOLD = 10
 
 function updateScrollState() {
   const tabs = tabsRef.value
@@ -41,40 +36,7 @@ function handleWheel(event: WheelEvent) {
   tabs.scrollLeft += delta
 }
 
-function handlePointerDown(event: PointerEvent) {
-  const tabs = tabsRef.value
-  if (!tabs || event.pointerType !== 'mouse' || event.button !== 0) return
-  dragPointerId = event.pointerId
-  dragStartX = event.clientX
-  dragStartScrollLeft = tabs.scrollLeft
-  didDrag = false
-  tabs.setPointerCapture(event.pointerId)
-}
-
-function handlePointerMove(event: PointerEvent) {
-  const tabs = tabsRef.value
-  if (!tabs || dragPointerId !== event.pointerId) return
-  const distance = event.clientX - dragStartX
-  // Trackpads and touchpads can emit a few pixels of jitter during a click.
-  // Only treat a clearly intentional horizontal movement as a drag so tabs remain clickable.
-  if (Math.abs(distance) > DRAG_THRESHOLD) {
-    didDrag = true
-    tabs.classList.add('dragging')
-  }
-  if (didDrag) tabs.scrollLeft = dragStartScrollLeft - distance
-}
-
-function finishPointerDrag(event: PointerEvent) {
-  const tabs = tabsRef.value
-  if (!tabs || dragPointerId !== event.pointerId) return
-  dragPointerId = null
-  tabs.classList.remove('dragging')
-  if (tabs.hasPointerCapture(event.pointerId)) tabs.releasePointerCapture(event.pointerId)
-  window.setTimeout(() => { didDrag = false }, 0)
-}
-
 function selectPlatform(value: HotSource | 'ALL') {
-  if (didDrag) return
   emit('select', value)
 }
 
@@ -110,10 +72,6 @@ onBeforeUnmount(() => resizeObserver?.disconnect())
       class="tabs platform-tabs"
       @scroll="updateScrollState"
       @wheel="handleWheel"
-      @pointerdown="handlePointerDown"
-      @pointermove="handlePointerMove"
-      @pointerup="finishPointerDrag"
-      @pointercancel="finishPointerDrag"
     >
       <button data-source="ALL" class="tab-button" :class="{ active: active === 'ALL' }" type="button" @click="selectPlatform('ALL')">
         <Globe2 class="platform-icon" :size="16" :stroke-width="2.2" aria-hidden="true" />全网

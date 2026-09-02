@@ -356,8 +356,7 @@ body { background: var(--canvas); }
 .board-toolbar { gap: 14px; margin: 34px 0 20px; padding: 8px; border: 1px solid var(--ink); border-radius: 6px; background: var(--paper); }
 .platform-tabs-scroller { display: flex; flex: 1; align-items: center; gap: 6px; min-width: 0; }
 .tabs { gap: 2px; padding: 0; border-radius: 0; background: transparent; }
-.platform-tabs { flex: 1; min-width: 0; scroll-behavior: smooth; overscroll-behavior-x: contain; cursor: grab; }
-.platform-tabs.dragging { cursor: grabbing; scroll-behavior: auto; user-select: none; }
+.platform-tabs { flex: 1; min-width: 0; scroll-behavior: smooth; overscroll-behavior-x: contain; touch-action: pan-x; }
 .tabs-scroll-button { display: grid; flex: 0 0 auto; place-items: center; width: 30px; height: 30px; padding: 0; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--paper); box-shadow: none; }
 .tabs-scroll-button:hover:not(:disabled) { border-color: var(--ink); color: var(--blue); }
 .tabs-scroll-button:disabled { cursor: default; opacity: .3; }
