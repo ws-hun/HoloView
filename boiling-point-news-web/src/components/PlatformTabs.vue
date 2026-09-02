@@ -15,6 +15,7 @@ let dragPointerId: number | null = null
 let dragStartX = 0
 let dragStartScrollLeft = 0
 let didDrag = false
+const DRAG_THRESHOLD = 10
 
 function updateScrollState() {
   const tabs = tabsRef.value
@@ -54,7 +55,9 @@ function handlePointerMove(event: PointerEvent) {
   const tabs = tabsRef.value
   if (!tabs || dragPointerId !== event.pointerId) return
   const distance = event.clientX - dragStartX
-  if (Math.abs(distance) > 4) {
+  // Trackpads and touchpads can emit a few pixels of jitter during a click.
+  // Only treat a clearly intentional horizontal movement as a drag so tabs remain clickable.
+  if (Math.abs(distance) > DRAG_THRESHOLD) {
     didDrag = true
     tabs.classList.add('dragging')
   }
