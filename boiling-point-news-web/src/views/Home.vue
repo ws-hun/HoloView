@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ArrowRight, Clock3, Sparkles } from 'lucide-vue-next'
 import { RouterLink, useRoute } from 'vue-router'
+import { hotApi } from '@/api/hot'
 import HotList from '@/components/HotList.vue'
 import { useHotStore } from '@/stores/hot'
 import { formatClock, formatHotValue } from '@/utils/format'
@@ -10,7 +11,10 @@ import type { HotItem } from '@/types/hot'
 const hotStore = useHotStore()
 const route = useRoute()
 const currentTime = ref(new Date().toISOString())
+const searchResults = ref<HotItem[]>([])
+const searchLoading = ref(false)
 let clockTimer: number | null = null
+let searchRequestId = 0
 
 const query = computed(() => typeof route.query.q === 'string' ? route.query.q.trim() : '')
 const currentDate = computed(() => new Intl.DateTimeFormat('zh-CN', {
@@ -19,15 +23,44 @@ const currentDate = computed(() => new Intl.DateTimeFormat('zh-CN', {
 }).format(new Date(currentTime.value)).replace('/', '月') + '日')
 const filteredItems = computed(() => {
   if (!query.value) return hotStore.latestHotItems
-  const keyword = query.value.toLowerCase()
-  return hotStore.latestHotItems.filter((item) => `${item.title}${item.description}`.toLowerCase().includes(keyword))
+  return searchResults.value
 })
 const hero = computed<HotItem | undefined>(() => filteredItems.value[0])
 const platformPulse = computed(() => hotStore.platforms.map((platform) => {
   const items = hotStore.latestHotItems.filter((item) => item.source === platform.code)
   const score = items.reduce((total, item) => total + item.hotValue, 0)
-  return { ...platform, count: items.length, score, ratio: Math.max(18, Math.min(100, score / Math.max(1, hotStore.totalHeat) * 500)) }
+  const ratio = score > 0 ? Math.max(8, Math.min(100, score / Math.max(1, hotStore.totalHeat) * 100)) : 0
+  const colors: Record<string, string> = {
+    WEIBO: '#e72b31', ZHIHU: '#1772f6', BAIDU: '#3b5bdb', DOUYIN: '#17191c',
+    TOUTIAO: '#f04438', BILIBILI: '#00aeec', JUEJIN: '#1e80ff', THE_PAPER: '#1f6fb2',
+    ITHOME: '#1677ff', KR36: '#222222', JIN10: '#1769aa', HACKER_NEWS: '#ff6600',
+    WALLSTREET_CN: '#c49a32', NOWCODER: '#00a98f', TIEBA: '#4e6ef2', HUPU: '#c51f25',
+    DOUBAN_MOVIE: '#2e963d', GITHUB_TRENDING: '#24292f', STEAM: '#1b2838',
+    SMZDM: '#e62828', DONGQIUDI: '#16a05d', OTHER: '#7b8186',
+  }
+  return { ...platform, count: items.length, score, ratio, color: colors[platform.code] || platform.color }
 }))
+
+async function loadSearchResults() {
+  const keyword = query.value
+  const request = ++searchRequestId
+  if (!keyword) {
+    searchResults.value = []
+    searchLoading.value = false
+    return
+  }
+  searchLoading.value = true
+  try {
+    const result = await hotApi.search(keyword, 50)
+    if (request === searchRequestId && query.value === keyword) searchResults.value = result
+  } catch {
+    if (request === searchRequestId && query.value === keyword) searchResults.value = []
+  } finally {
+    if (request === searchRequestId) searchLoading.value = false
+  }
+}
+
+watch(query, () => { void loadSearchResults() }, { immediate: true })
 
 onMounted(() => {
   clockTimer = window.setInterval(() => { currentTime.value = new Date().toISOString() }, 1000)
@@ -72,7 +105,7 @@ onBeforeUnmount(() => { if (clockTimer !== null) window.clearInterval(clockTimer
       <section class="hot-layout">
         <div>
           <div class="section-head">
-            <div><h2 class="section-title">{{ query ? `“${query}”的搜索结果` : '今日热榜' }}</h2><span class="section-note">按全网热度排序 · 每分钟刷新</span></div>
+            <div><h2 class="section-title">{{ query ? `“${query}”的搜索结果` : '今日热榜' }}</h2><span class="section-note">{{ query ? (searchLoading ? '正在搜索全量热点' : `${filteredItems.length} 条匹配结果`) : '按全网热度排序 · 每分钟刷新' }}</span></div>
             <RouterLink to="/boards" class="source-link">完整热榜 <ArrowRight :size="14" /></RouterLink>
           </div>
           <HotList :items="filteredItems" :limit="10" sequential-rank />
@@ -106,6 +139,7 @@ onBeforeUnmount(() => { if (clockTimer !== null) window.clearInterval(clockTimer
         </aside>
       </section>
     </template>
+    <div v-else-if="searchLoading" class="empty-state"><strong>正在搜索全量热点</strong>正在从已采集的公开信息源中匹配内容。</div>
     <div v-else class="empty-state"><strong>没有找到相关热点</strong>换个关键词试试看。</div>
 
   </div>

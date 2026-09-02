@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 import { Flame, House, ListOrdered, Menu, Search, Tags, TrendingUp, X } from 'lucide-vue-next'
 import SseStatus from '@/components/SseStatus.vue'
@@ -19,6 +19,10 @@ const navItems = [
 ]
 
 const isDetail = computed(() => route.name === 'hot-detail')
+
+watch(() => route.query.q, (value) => {
+  searchValue.value = typeof value === 'string' ? value : ''
+}, { immediate: true })
 
 function submitSearch() {
   const keyword = searchValue.value.trim()

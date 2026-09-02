@@ -25,6 +25,18 @@ export const hotApi = {
       },
     )
   },
+  search(keyword: string, limit = 50) {
+    return withMock(
+      async () => (await http.get<ApiResult<HotItem[]>>('/hot/search', { params: { keyword, limit } })).data.data,
+      () => {
+        const normalized = keyword.trim().toLowerCase()
+        return mockHotItems
+          .filter((item) => `${item.title}${item.description}`.toLowerCase().includes(normalized))
+          .sort((a, b) => b.hotValue - a.hotValue)
+          .slice(0, limit)
+      },
+    )
+  },
   detail(id: number) {
     return withMock(
       async () => (await http.get<ApiResult<HotDetail>>(`/hot/${id}`)).data.data.item,
