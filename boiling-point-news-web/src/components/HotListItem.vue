@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router'
 import type { HotItem } from '@/types/hot'
 import { formatHotValue, formatTime } from '@/utils/format'
 
-const props = defineProps<{ item: HotItem; compact?: boolean; displayRank?: number }>()
+const props = defineProps<{ item: HotItem; compact?: boolean; displayRank?: number; heatPercent?: number }>()
 const shownRank = computed(() => props.displayRank ?? props.item.rank)
 
 const sourceHref = computed(() => {
@@ -29,7 +29,7 @@ function displayTime() {
 </script>
 
 <template>
-  <article class="hot-list-item" :class="{ compact }">
+  <article class="hot-list-item" :class="{ compact, 'top-tier': shownRank <= 3, 'mid-tier': shownRank > 3 && shownRank <= 10 }">
     <span class="rank-number" :class="{ 'top-rank': shownRank <= 3 }">{{ String(shownRank).padStart(2, '0') }}</span>
     <div>
       <RouterLink :to="`/hot/${item.id}`" class="hot-item-title">{{ item.title }}</RouterLink>
@@ -46,7 +46,7 @@ function displayTime() {
     <div class="hot-item-score">
       <span class="hot-score-value">{{ item.hotValueText || formatHotValue(item.hotValue) }}</span>
       <span class="hot-score-label">热度指数</span>
-      <div class="heat-track"><div class="heat-fill" :style="{ width: `${Math.max(10, Math.round(item.hotValue / 985600))}%` }" /></div>
+      <div class="heat-track"><div class="heat-fill" :style="{ width: `${heatPercent || 0}%` }" /></div>
     </div>
     <a v-if="compact && sourceHref" class="compact-external" :href="sourceHref" target="_blank" rel="noreferrer" aria-label="打开原文" title="打开原文"><ExternalLink :size="13" /></a>
   </article>

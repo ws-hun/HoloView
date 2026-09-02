@@ -259,6 +259,31 @@ a { color: inherit; text-decoration: none; }
   .footer-inner p + p { margin-top: 8px; }
 }
 
+/* Newsroom hierarchy: let the ranking carry the page instead of equal-weight rows. */
+.board-toolbar { border-right: 0; border-left: 0; border-radius: 0; padding: 8px 0; background: transparent; }
+.board-toolbar .platform-tabs-scroller { padding: 0 6px; }
+.hot-list-item { position: relative; }
+.hot-list-item.top-tier { min-height: 112px; padding-top: 22px; padding-bottom: 22px; background: #fff; }
+.hot-list-item.top-tier::before { position: absolute; top: 0; bottom: 0; left: 0; width: 3px; background: var(--red); content: ""; }
+.hot-list-item.top-tier .rank-number { font-size: 27px; color: var(--red); }
+.hot-list-item.top-tier .hot-item-title { font-size: 17px; font-weight: 850; }
+.hot-list-item.top-tier .hot-score-value { color: var(--red); font-size: 20px; }
+.hot-list-item.mid-tier .rank-number { color: #5f646b; }
+.hot-list-item:not(.top-tier) .hot-score-label { color: #9a9fa6; }
+.heat-track { height: 6px; background: #e6e8eb; }
+.heat-fill { min-width: 4px; }
+.board-list .hot-list-item.top-tier { padding-left: 20px; }
+.board-list .hot-list-item.top-tier::before { left: 0; }
+
+@media (max-width: 680px) {
+  .board-toolbar { padding: 6px 0; }
+  .board-toolbar .platform-tabs-scroller { padding: 0; }
+  .hot-list-item.top-tier { min-height: 98px; padding-top: 17px; padding-bottom: 17px; }
+  .hot-list-item.top-tier .hot-item-title { font-size: 15px; }
+  .hot-list-item.top-tier .rank-number { font-size: 22px; }
+  .board-list .hot-list-item.top-tier { padding-left: 14px; }
+}
+
 /* Editorial system: an iOS-light foundation with stronger newsroom hierarchy. */
 :root {
   color: #111111;
